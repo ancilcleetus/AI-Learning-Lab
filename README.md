@@ -2,6 +2,11 @@
 
 ## Status:
 
+* [Programming Languages](Programming-Languages) ![10%](https://geps.dev/progress/10)
+    * [Python](Programming-Languages/Python) ![10%](https://geps.dev/progress/10)
+    * [C++](Programming-Languages/C++) ![10%](https://geps.dev/progress/10)
+    * [TypeScript](Programming-Languages/TypeScript) ![10%](https://geps.dev/progress/10)
+    * [Mojo](Programming-Languages/Mojo) ![10%](https://geps.dev/progress/10)
 * [Maths](Maths) ![10%](https://geps.dev/progress/10)
 * [Tools](Tools) ![10%](https://geps.dev/progress/10)
     * [Deep Dive into Numpy and Pandas](Tools/Deep-Dive-into-Numpy-and-Pandas) ![10%](https://geps.dev/progress/10)
