@@ -2,9 +2,11 @@
 
 This learning path is crafted for those seeking a deep understanding of Numpy and Pandas, two cornerstone libraries in data science. These courses will immerse you in the powerful features of Numpy for numerical computing and Pandas for data manipulation.
 
-## Course 1: NumPy Basics ![83%](https://geps.dev/progress/83) [![Open in GitHub](https://img.shields.io/badge/GitHub-181717?logo=github&logoColor=white&style=flat)](01_NumPy_Basics.ipynb) [![Open in nbviewer](https://img.shields.io/badge/Jupyter%20nbviewer-F37626?logo=jupyter&logoColor=white&style=flat)](https://nbviewer.org/github/ancilcleetus/AI-Learning-Lab/blob/main/Tools/Deep-Dive-into-Numpy-and-Pandas/01_NumPy_Basics.ipynb) [![Open in Colab](https://img.shields.io/badge/Google%20Colab-F9AB00?logo=googlecolab&logoColor=white&style=flat)](https://colab.research.google.com/github/ancilcleetus/AI-Learning-Lab/blob/main/Tools/Deep-Dive-into-Numpy-and-Pandas/01_NumPy_Basics.ipynb)
+## Course 1: NumPy Basics ![100%](https://geps.dev/progress/100) [![Open in GitHub](https://img.shields.io/badge/GitHub-181717?logo=github&logoColor=white&style=flat)](01_NumPy_Basics.ipynb) [![Open in nbviewer](https://img.shields.io/badge/Jupyter%20nbviewer-F37626?logo=jupyter&logoColor=white&style=flat)](https://nbviewer.org/github/ancilcleetus/AI-Learning-Lab/blob/main/Tools/Deep-Dive-into-Numpy-and-Pandas/01_NumPy_Basics.ipynb) [![Open in Colab](https://img.shields.io/badge/Google%20Colab-F9AB00?logo=googlecolab&logoColor=white&style=flat)](https://colab.research.google.com/github/ancilcleetus/AI-Learning-Lab/blob/main/Tools/Deep-Dive-into-Numpy-and-Pandas/01_NumPy_Basics.ipynb)
 
 This course introduces you to the powerful NumPy library, which is the backbone for numerical and scientific computations in Python. You will learn how to create, manipulate, and operate on arrays, understand their key properties, and use array-based operations for efficient computations.
+
+![[Certificate](https://codesignal.com/learn/certificates/cmst7bbpc001zj10arsapebwy/courses/165)](data/certificates/01_NumPy_Basics-certificate.png)
 
 ## Course 2: Pandas Basics and DataFrame Manipulation
 
