@@ -6,7 +6,7 @@ This learning path is crafted for those seeking a deep understanding of Numpy an
 
 This course introduces you to the powerful NumPy library, which is the backbone for numerical and scientific computations in Python. You will learn how to create, manipulate, and operate on arrays, understand their key properties, and use array-based operations for efficient computations.
 
-![[Certificate](https://codesignal.com/learn/certificates/cmst7bbpc001zj10arsapebwy/courses/165)](data/certificates/01_NumPy_Basics-certificate.png)
+![Certificate](data/certificates/01_NumPy_Basics-certificate.png)
 
 ## Course 2: Pandas Basics and DataFrame Manipulation
 
