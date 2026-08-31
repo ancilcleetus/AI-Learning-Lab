@@ -2,6 +2,9 @@
 
 ## Status:
 
+* [Maths](Maths) ![10%](https://geps.dev/progress/10)
+    * [Math Foundations for Machine Learning](Maths/Math-Foundations-for-Machine-Learning) ![10%](https://geps.dev/progress/10)
+    	* Vectors and Matrices ![100%](https://geps.dev/progress/100) [![Open in GitHub](https://img.shields.io/badge/GitHub-181717?logo=github&logoColor=white&style=flat)](Maths/Math-Foundations-for-Machine-Learning/01_Vectors_and_Matrices.ipynb) [![Open in nbviewer](https://img.shields.io/badge/Jupyter%20nbviewer-F37626?logo=jupyter&logoColor=white&style=flat)](https://nbviewer.org/github/ancilcleetus/AI-Learning-Lab/blob/main/Maths/Math-Foundations-for-Machine-Learning/01_Vectors_and_Matrices.ipynb) [![Open in Colab](https://img.shields.io/badge/Google%20Colab-F9AB00?logo=googlecolab&logoColor=white&style=flat)](https://colab.research.google.com/github/ancilcleetus/AI-Learning-Lab/blob/main/Maths/Math-Foundations-for-Machine-Learning/01_Vectors_and_Matrices.ipynb)
 * [Programming Languages](Programming-Languages) ![10%](https://geps.dev/progress/10)
     * [Python](Programming-Languages/Python) ![10%](https://geps.dev/progress/10)
     	* [Introduction to Programming with Python](Programming-Languages/Python/Introduction-to-Programming-with-Python) ![10%](https://geps.dev/progress/10)
@@ -9,7 +12,6 @@
     * [C++](Programming-Languages/C++) ![10%](https://geps.dev/progress/10)
     * [TypeScript](Programming-Languages/TypeScript) ![10%](https://geps.dev/progress/10)
     * [Mojo](Programming-Languages/Mojo) ![10%](https://geps.dev/progress/10)
-* [Maths](Maths) ![10%](https://geps.dev/progress/10)
 * [Tools](Tools) ![10%](https://geps.dev/progress/10)
     * [Deep Dive into Numpy and Pandas](Tools/Deep-Dive-into-Numpy-and-Pandas) ![17%](https://geps.dev/progress/17)
     	* Course 1: NumPy Basics ![100%](https://geps.dev/progress/100) [![Open in GitHub](https://img.shields.io/badge/GitHub-181717?logo=github&logoColor=white&style=flat)](Tools/Deep-Dive-into-Numpy-and-Pandas/01_NumPy_Basics.ipynb) [![Open in nbviewer](https://img.shields.io/badge/Jupyter%20nbviewer-F37626?logo=jupyter&logoColor=white&style=flat)](https://nbviewer.org/github/ancilcleetus/AI-Learning-Lab/blob/main/Tools/Deep-Dive-into-Numpy-and-Pandas/01_NumPy_Basics.ipynb) [![Open in Colab](https://img.shields.io/badge/Google%20Colab-F9AB00?logo=googlecolab&logoColor=white&style=flat)](https://colab.research.google.com/github/ancilcleetus/AI-Learning-Lab/blob/main/Tools/Deep-Dive-into-Numpy-and-Pandas/01_NumPy_Basics.ipynb)
