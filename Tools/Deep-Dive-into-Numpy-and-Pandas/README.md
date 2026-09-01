@@ -14,9 +14,11 @@ This course gently introduces you to the world of data manipulation using Pandas
 
 ![Certificate](data/certificates/02_Pandas_Basics_and_DataFrame_Manipulation-certificate.png)
 
-## Course 3: Introduction to Data Cleaning and Transformation
+## Course 3: Introduction to Data Cleaning and Transformation ![10%](https://geps.dev/progress/10) [![Open in GitHub](https://img.shields.io/badge/GitHub-181717?logo=github&logoColor=white&style=flat)](03_Introduction_to_Data_Cleaning_and_Transformation.ipynb) [![Open in nbviewer](https://img.shields.io/badge/Jupyter%20nbviewer-F37626?logo=jupyter&logoColor=white&style=flat)](https://nbviewer.org/github/ancilcleetus/AI-Learning-Lab/blob/main/Tools/Deep-Dive-into-Numpy-and-Pandas/03_Introduction_to_Data_Cleaning_and_Transformation.ipynb) [![Open in Colab](https://img.shields.io/badge/Google%20Colab-F9AB00?logo=googlecolab&logoColor=white&style=flat)](https://colab.research.google.com/github/ancilcleetus/AI-Learning-Lab/blob/main/Tools/Deep-Dive-into-Numpy-and-Pandas/03_Introduction_to_Data_Cleaning_and_Transformation.ipynb)
 
 Dive deeper into data selection and manipulation, learning how to filter datasets based on specific conditions, clean data by handling missing values, and create new derived features from existing data. Each step builds your skillset, preparing you to tackle more complex data cleaning challenges.
+
+![Certificate](data/certificates/03_Introduction_to_Data_Cleaning_and_Transformation-certificate.png)
 
 ## Course 4: Advanced Data Analysis with Pandas
 

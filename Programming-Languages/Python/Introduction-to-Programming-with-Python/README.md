@@ -8,9 +8,11 @@ Dive into the essentials of Python programming through an engaging, beginner-fri
 
 ![Certificate](data/certificates/01_Programming_Foundations_with_Python-certificate.png)
 
-## Course 2: Introduction to Simple Data Structures in Python
+## Course 2: Introduction to Simple Data Structures in Python ![10%](https://geps.dev/progress/10) [![Open in GitHub](https://img.shields.io/badge/GitHub-181717?logo=github&logoColor=white&style=flat)](02_Introduction_to_Simple_Data_Structures_in_Python.ipynb) [![Open in nbviewer](https://img.shields.io/badge/Jupyter%20nbviewer-F37626?logo=jupyter&logoColor=white&style=flat)](https://nbviewer.org/github/ancilcleetus/AI-Learning-Lab/blob/main/Programming-Languages/Python/Introduction-to-Programming-with-Python/02_Introduction_to_Simple_Data_Structures_in_Python.ipynb) [![Open in Colab](https://img.shields.io/badge/Google%20Colab-F9AB00?logo=googlecolab&logoColor=white&style=flat)](https://colab.research.google.com/github/ancilcleetus/AI-Learning-Lab/blob/main/Programming-Languages/Python/Introduction-to-Programming-with-Python/02_Introduction_to_Simple_Data_Structures_in_Python.ipynb)
 
 Expand your programming knowledge by exploring simple data structures in Python. This course introduces you to lists, tuples, and dictionaries, teaching you how to create, access, and manipulate these structures effectively. Through practical examples, you'll learn the importance of each structure and when to use them in your programs.
+
+![Certificate](data/certificates/02_Introduction_to_Simple_Data_Structures_in_Python-certificate.png)
 
 ## Course 3: Mastering Control Structures in Python
 
