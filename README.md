@@ -36,3 +36,10 @@
     * [Neural Networks from Scratch](Deep-Learning/Neural-Networks-from-Scratch) ![10%](https://geps.dev/progress/10)
         * The neuron — weights, bias, and one forward pass ![100%](https://geps.dev/progress/100) [![Open in GitHub](https://img.shields.io/badge/GitHub-181717?logo=github&logoColor=white&style=flat)](Deep-Learning/Neural-Networks-from-Scratch/01_neuron.ipynb) [![Open in nbviewer](https://img.shields.io/badge/Jupyter%20nbviewer-F37626?logo=jupyter&logoColor=white&style=flat)](https://nbviewer.org/github/ancilcleetus/AI-Learning-Lab/blob/main/Deep-Learning/Neural-Networks-from-Scratch/01_neuron.ipynb) [![Open in Colab](https://img.shields.io/badge/Google%20Colab-F9AB00?logo=googlecolab&logoColor=white&style=flat)](https://colab.research.google.com/github/ancilcleetus/AI-Learning-Lab/blob/main/Deep-Learning/Neural-Networks-from-Scratch/01_neuron.ipynb)
         * From one neuron to a trained network ![100%](https://geps.dev/progress/100) [![Open in GitHub](https://img.shields.io/badge/GitHub-181717?logo=github&logoColor=white&style=flat)](Deep-Learning/Neural-Networks-from-Scratch/02_first_network.ipynb) [![Open in nbviewer](https://img.shields.io/badge/Jupyter%20nbviewer-F37626?logo=jupyter&logoColor=white&style=flat)](https://nbviewer.org/github/ancilcleetus/AI-Learning-Lab/blob/main/Deep-Learning/Neural-Networks-from-Scratch/02_first_network.ipynb) [![Open in Colab](https://img.shields.io/badge/Google%20Colab-F9AB00?logo=googlecolab&logoColor=white&style=flat)](https://colab.research.google.com/github/ancilcleetus/AI-Learning-Lab/blob/main/Deep-Learning/Neural-Networks-from-Scratch/02_first_network.ipynb)
+    * References
+        * [Neural Networks: Zero to Hero](https://github.com/karpathy/nn-zero-to-hero)
+        * [micrograd](https://github.com/karpathy/micrograd)
+        * [minbpe](https://github.com/karpathy/minbpe)
+        * [nanoGPT](https://github.com/karpathy/nanoGPT)
+        * [microGPT](https://karpathy.ai/microgpt.html)
+        * [nanochat](https://github.com/karpathy/nanochat)
