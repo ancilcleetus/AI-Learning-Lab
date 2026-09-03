@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Learning Lab — Ancil Cleetus's Structured Journey Through AI/ML</title>
+<meta name="description" content="A structured, hands-on record of learning AI and machine learning from first principles — Maths, Programming, Tools, Machine Learning, and Deep Learning, tracked notebook by notebook.">
+<script>
+  // Resolve theme before paint to avoid a flash. Falls back to system preference.
+  (function () {
+    try {
+      var t = localStorage.getItem('ail-theme');
+      if (!t) t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {
+      document.documentElement.setAttribute('data-theme',
+        (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light');
+    }
+  })();
+</script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg-primary: #ffffff; --bg-secondary: #f5f4f0; --bg-tertiary: #eeece6;
+    --bg-info: #e6f1fb; --bg-success: #e1f5ee; --bg-warning: #faeeda; --bg-danger: #fcebeb;
+    --text-primary: #1a1a18; --text-secondary: #5f5e5a; --text-tertiary: #888780;
+    --text-info: #185fa5; --text-success: #0f6e56; --text-warning: #854f0b; --text-danger: #a32d2d;
+    --border-tertiary: rgba(0,0,0,0.12); --border-secondary: rgba(0,0,0,0.22);
+    --border-info: #85b7eb; --border-success: #5dcaa5; --border-warning: #ef9f27; --border-danger: #e24b4a;
+    --radius-md: 8px; --radius-lg: 12px; --radius-xl: 18px;
+    --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+    --font-display: Georgia, 'Times New Roman', 'Iowan Old Style', serif;
+    /* ===== ACCENT THEME (light) ===== */
+    --g1: #2563eb; --g2: #4f46e5; --g3: #7c3aed;
+    --grad: linear-gradient(100deg, var(--g1) 0%, var(--g2) 52%, var(--g3) 100%);
+    --shadow-sm: 0 1px 2px rgba(20,20,16,0.05);
+    --shadow-md: 0 1px 2px rgba(20,20,16,0.05), 0 10px 28px rgba(20,20,16,0.07);
+    --blob-info: rgba(31,111,178,0.22); --blob-success: rgba(19,138,104,0.20); --blob-warning: rgba(194,116,15,0.20);
+    --grid-line: rgba(0,0,0,0.045);
+  }
+  :root[data-theme="dark"] {
+    --bg-primary: #1c1c1a; --bg-secondary: #252522; --bg-tertiary: #161614;
+    --bg-info: #042c53; --bg-success: #04342c; --bg-warning: #412402; --bg-danger: #501313;
+    --text-primary: #e8e6de; --text-secondary: #b4b2a9; --text-tertiary: #73726c;
+    --text-info: #85b7eb; --text-success: #5dcaa5; --text-warning: #ef9f27; --text-danger: #f09595;
+    --border-tertiary: rgba(255,255,255,0.10); --border-secondary: rgba(255,255,255,0.20);
+    --border-info: #185fa5; --border-success: #0f6e56; --border-warning: #854f0b; --border-danger: #a32d2d;
+    --g1: #60a5fa; --g2: #818cf8; --g3: #a78bfa;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.4);
+    --shadow-md: 0 1px 2px rgba(0,0,0,0.4), 0 12px 32px rgba(0,0,0,0.45);
+    --blob-info: rgba(133,183,235,0.16); --blob-success: rgba(93,202,165,0.14); --blob-warning: rgba(239,159,39,0.14);
+    --grid-line: rgba(255,255,255,0.04);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme]) {
+      --bg-primary: #1c1c1a; --bg-secondary: #252522; --bg-tertiary: #161614;
+      --bg-info: #042c53; --bg-success: #04342c; --bg-warning: #412402; --bg-danger: #501313;
+      --text-primary: #e8e6de; --text-secondary: #b4b2a9; --text-tertiary: #73726c;
+      --text-info: #85b7eb; --text-success: #5dcaa5; --text-warning: #ef9f27; --text-danger: #f09595;
+      --border-tertiary: rgba(255,255,255,0.10); --border-secondary: rgba(255,255,255,0.20);
+      --border-info: #185fa5; --border-success: #0f6e56; --border-warning: #854f0b; --border-danger: #a32d2d;
+      --g1: #60a5fa; --g2: #818cf8; --g3: #a78bfa;
+      --blob-info: rgba(133,183,235,0.16); --blob-success: rgba(93,202,165,0.14); --blob-warning: rgba(239,159,39,0.14);
+      --grid-line: rgba(255,255,255,0.04);
+    }
+  }
+  :root { --bg-violet: #f0eafb; --text-violet: #6d3bbf; --border-violet: #b69ae6; }
+  :root[data-theme="dark"] { --bg-violet: #2c1a52; --text-violet: #bba3f2; --border-violet: #6d3bbf; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme]) { --bg-violet: #2c1a52; --text-violet: #bba3f2; --border-violet: #6d3bbf; } }
+
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--font); background: var(--bg-tertiary); color: var(--text-primary);
+         line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 0 1.25rem; }
+  a { color: inherit; }
+  .grad { background: var(--grad); -webkit-background-clip: text; background-clip: text;
+          -webkit-text-fill-color: transparent; color: var(--text-info); }
+
+  .skip { position: absolute; left: -9999px; top: 0; background: var(--bg-primary); color: var(--text-primary);
+          padding: 8px 14px; border-radius: var(--radius-md); z-index: 200; }
+  .skip:focus { left: 12px; top: 12px; }
+
+  /* ---------- top bar ---------- */
+  .topbar { position: sticky; top: 0; z-index: 100; backdrop-filter: saturate(140%) blur(10px);
+            background: color-mix(in srgb, var(--bg-tertiary) 82%, transparent);
+            border-bottom: 0.5px solid var(--border-tertiary); }
+  .bar-inner { max-width: 980px; margin: 0 auto; padding: 0.7rem 1.25rem;
+               display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 600;
+           font-size: 14px; color: var(--text-primary); letter-spacing: -0.01em; }
+  .brand .mark { width: 26px; height: 26px; flex-shrink: 0; }
+  .bar-actions { display: inline-flex; align-items: center; gap: 6px; }
+  .icon-btn { width: 34px; height: 34px; border-radius: var(--radius-md); border: 0.5px solid var(--border-tertiary);
+              background: var(--bg-primary); color: var(--text-secondary); cursor: pointer;
+              display: inline-flex; align-items: center; justify-content: center; text-decoration: none;
+              transition: color 0.15s, border-color 0.15s, transform 0.15s; }
+  .icon-btn:hover { color: var(--text-primary); border-color: var(--border-secondary); transform: translateY(-1px); }
+  .icon-btn svg { width: 17px; height: 17px; }
+  .theme-toggle .sun { display: none; } .theme-toggle .moon { display: block; }
+  :root[data-theme="dark"] .theme-toggle .sun { display: block; }
+  :root[data-theme="dark"] .theme-toggle .moon { display: none; }
+
+  /* ---------- hero ---------- */
+  .hero { position: relative; overflow: hidden; padding: clamp(3.5rem, 9vw, 7rem) 0 clamp(3rem, 7vw, 5.5rem); }
+  .hero-bg { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+  .hero-bg .blob { position: absolute; border-radius: 50%; filter: blur(60px); opacity: 0.9; }
+  .hero-bg .b1 { width: 460px; height: 460px; background: var(--blob-info); top: -140px; left: -120px; animation: drift1 22s ease-in-out infinite; }
+  .hero-bg .b2 { width: 420px; height: 420px; background: var(--blob-warning); top: -80px; right: -120px; animation: drift2 26s ease-in-out infinite; }
+  .hero-bg .b3 { width: 380px; height: 380px; background: var(--blob-success); bottom: -180px; left: 30%; animation: drift3 30s ease-in-out infinite; }
+  .hero-bg .grid { position: absolute; inset: 0;
+      background-image: linear-gradient(var(--grid-line) 1px, transparent 1px), linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+      background-size: 46px 46px; mask-image: radial-gradient(circle at 50% 30%, #000 0%, transparent 72%);
+      -webkit-mask-image: radial-gradient(circle at 50% 30%, #000 0%, transparent 72%); }
+  @keyframes drift1 { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(40px,30px) scale(1.08); } }
+  @keyframes drift2 { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(-36px,42px) scale(1.1); } }
+  @keyframes drift3 { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(30px,-30px) scale(1.06); } }
+  .hero-inner { position: relative; z-index: 1; max-width: 760px; }
+  .eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: 11.5px; font-weight: 600;
+             letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-secondary);
+             background: var(--bg-primary); border: 0.5px solid var(--border-tertiary);
+             padding: 6px 13px; border-radius: 999px; box-shadow: var(--shadow-sm); }
+  .eyebrow .dotg { width: 7px; height: 7px; border-radius: 50%; background: var(--grad); }
+  h1 { font-family: var(--font-display); font-weight: 600; letter-spacing: -0.015em; line-height: 1.08;
+       font-size: clamp(33px, 6.2vw, 58px); margin: 1.1rem 0 0; }
+  h1 .h1-lead { color: var(--text-primary); display: block; }
+  .lede { font-size: clamp(15px, 2.1vw, 18px); color: var(--text-secondary); line-height: 1.6;
+          max-width: 600px; margin-top: 1.25rem; }
+  .hero-cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 1.9rem; }
+  .btn-primary, .btn-ghost { display: inline-flex; align-items: center; gap: 8px; text-decoration: none;
+       font-size: 14px; font-weight: 600; padding: 11px 20px; border-radius: var(--radius-md);
+       transition: transform 0.15s, opacity 0.15s, border-color 0.15s; cursor: pointer; font-family: var(--font); }
+  .btn-primary { color: #fff; background: var(--grad); border: 0; box-shadow: var(--shadow-md); }
+  .btn-primary:hover { transform: translateY(-2px); opacity: 0.94; }
+  .btn-ghost { color: var(--text-primary); background: var(--bg-primary); border: 0.5px solid var(--border-secondary); }
+  .btn-ghost:hover { transform: translateY(-2px); border-color: var(--text-secondary); }
+
+  .stats { display: flex; flex-wrap: wrap; gap: clamp(1.6rem, 5vw, 3rem); margin-top: 2.6rem; }
+  .stat .num { font-family: var(--font-display); font-size: clamp(26px, 4vw, 36px); font-weight: 600;
+               color: var(--text-primary); letter-spacing: -0.01em; line-height: 1; }
+  .stat .lbl { display: block; font-size: 12.5px; color: var(--text-tertiary); margin-top: 6px; }
+
+  /* ---------- section heads ---------- */
+  section.block { padding: clamp(2.5rem, 6vw, 4.5rem) 0; }
+  .kicker { font-size: 11.5px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+            color: var(--text-info); }
+  .section-head { margin-bottom: 2rem; }
+  .section-head h2 { font-family: var(--font-display); font-weight: 600; letter-spacing: -0.01em;
+                     font-size: clamp(24px, 4vw, 34px); margin: 0.5rem 0 0; }
+  .section-head p { font-size: 14.5px; color: var(--text-secondary); margin-top: 0.6rem; max-width: 560px; }
+
+  /* ---------- track cards (top-level) ---------- */
+  #track-list { display: grid; gap: 14px; }
+  .domain { background: var(--bg-primary); border: 0.5px solid var(--border-tertiary); border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-sm); overflow: hidden; transition: border-color 0.18s, box-shadow 0.18s; }
+  .domain:hover { border-color: var(--accent-bd); box-shadow: var(--shadow-md); }
+  .domain.accent-info    { --accent-text: var(--text-info);    --accent-bg: var(--bg-info);    --accent-bd: var(--border-info); }
+  .domain.accent-success { --accent-text: var(--text-success); --accent-bg: var(--bg-success); --accent-bd: var(--border-success); }
+  .domain.accent-warning { --accent-text: var(--text-warning); --accent-bg: var(--bg-warning); --accent-bd: var(--border-warning); }
+  .domain.accent-danger  { --accent-text: var(--text-danger);  --accent-bg: var(--bg-danger);  --accent-bd: var(--border-danger); }
+  .domain.accent-violet  { --accent-text: var(--text-violet);  --accent-bg: var(--bg-violet);  --accent-bd: var(--border-violet); }
+  .domain-head { width: 100%; text-align: left; background: transparent; border: 0; cursor: pointer;
+                 padding: clamp(1.1rem, 2.4vw, 1.5rem) clamp(1.2rem, 2.6vw, 1.7rem); font-family: var(--font);
+                 display: flex; flex-direction: column; gap: 14px; }
+  .domain-headline { display: flex; align-items: center; gap: 14px; }
+  .domain-dot { width: 11px; height: 11px; border-radius: 50%; background: var(--accent-text); flex-shrink: 0; }
+  .domain-text { flex: 1; min-width: 0; }
+  .domain-text h3 { font-size: 17px; font-weight: 600; color: var(--text-primary); letter-spacing: -0.01em; }
+  .chev { width: 18px; height: 18px; color: var(--text-tertiary); flex-shrink: 0; transition: transform 0.3s ease; }
+  .domain-head[aria-expanded="true"] .chev { transform: rotate(180deg); }
+  .progress { display: flex; align-items: center; gap: 12px; }
+  .progress-bar { flex: 1; height: 7px; border-radius: 999px; background: var(--bg-tertiary); overflow: hidden; }
+  .progress-bar span { display: block; height: 100%; width: 0; border-radius: 999px; background: var(--accent-text);
+                       transition: width 0.9s cubic-bezier(.2,.7,.2,1); }
+  .progress-txt { font-family: var(--font-mono); font-size: 11.5px; color: var(--text-tertiary); white-space: nowrap; }
+
+  .domain-panel { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
+  .domain-panel-inner { padding: 0 clamp(1.2rem, 2.6vw, 1.7rem) clamp(1.2rem, 2.6vw, 1.6rem); }
+
+  /* ---------- nested tree (sub-topics / courses / notebooks) ---------- */
+  .tree-root { display: grid; gap: 4px; }
+  .tree-node { border-top: 0.5px solid var(--border-tertiary); }
+  .tree-root > .tree-node:first-child,
+  .tree-root > .leaf:first-child,
+  .tree-root > .tree-leaf-simple:first-child,
+  .tree-root > .ref-box:first-child { border-top: 0; }
+  .tree-node > .tree-body > .tree-children > .tree-node,
+  .tree-node > .tree-body > .tree-children > .leaf,
+  .tree-node > .tree-body > .tree-children > .tree-leaf-simple,
+  .tree-node > .tree-body > .tree-children > .ref-box { border-top: 0.5px solid var(--border-tertiary); }
+  .tree-node > .tree-body > .tree-children > *:first-child { border-top: 0; }
+  .tree-summary { list-style: none; cursor: pointer; display: flex; align-items: center; gap: 10px;
+                  padding: 12px 4px; font-size: 14px; }
+  .tree-summary::-webkit-details-marker { display: none; }
+  .tree-summary .tree-chev { width: 15px; height: 15px; flex-shrink: 0; transition: transform 0.25s ease; }
+  .tree-node[open] > .tree-summary .tree-chev { transform: rotate(180deg); }
+  .tree-title { flex: 1; min-width: 0; font-weight: 600; color: var(--text-primary); }
+  .tree-pct { font-family: var(--font-mono); font-size: 11.5px; color: var(--text-tertiary); flex-shrink: 0; }
+  .tree-body { padding: 0 4px 14px 25px; }
+  .tree-body > .progress { margin-bottom: 10px; }
+  .tree-children { display: grid; gap: 4px; }
+
+  .tree-leaf-simple { padding: 12px 4px; display: grid; gap: 8px; }
+  .tree-simple-link { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .tree-simple-link .tree-title { transition: color 0.15s; }
+  .tree-simple-link:hover .tree-title { color: var(--text-info); }
+
+  .leaf { padding: 13px 4px 15px 25px; display: grid; gap: 9px; }
+  .leaf-top { display: flex; align-items: center; gap: 10px; }
+  .leaf-title { flex: 1; min-width: 0; font-size: 13.5px; color: var(--text-primary); }
+  .chip-row { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { display: inline-flex; align-items: center; gap: 6px; text-decoration: none; font-size: 12px;
+          font-weight: 600; color: var(--text-secondary); background: var(--bg-secondary);
+          border: 0.5px solid var(--border-tertiary); border-radius: 999px; padding: 5px 11px 5px 9px;
+          transition: color 0.15s, border-color 0.15s, transform 0.15s; }
+  .chip svg { width: 13px; height: 13px; flex-shrink: 0; }
+  .chip:hover { color: var(--text-info); border-color: var(--border-info); transform: translateY(-1px); }
+
+  .ref-box { padding: 13px 4px 15px 4px; }
+  .ref-label { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.07em;
+               text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 9px; }
+  .ref-list { display: grid; gap: 2px; }
+  .ref-link { display: flex; align-items: center; gap: 10px; text-decoration: none; padding: 8px 10px;
+              margin: 0 -10px; border-radius: var(--radius-md); font-size: 13.5px; color: var(--text-primary);
+              transition: background 0.15s, color 0.15s; }
+  .ref-link:hover { background: var(--bg-secondary); color: var(--text-info); }
+  .ref-link .ref-go { margin-left: auto; color: var(--text-tertiary); font-size: 13px; }
+
+  .status-note { font-size: 13.5px; color: var(--text-secondary); padding: 1.4rem;
+                 background: var(--bg-primary); border: 0.5px solid var(--border-tertiary);
+                 border-radius: var(--radius-xl); box-shadow: var(--shadow-sm); }
+  .status-note a { color: var(--text-info); text-decoration: underline; }
+
+  /* ---------- value blocks ---------- */
+  .values { display: grid; gap: 16px; }
+  .value { background: var(--bg-primary); border: 0.5px solid var(--border-tertiary); border-radius: var(--radius-xl);
+           padding: clamp(1.4rem, 3vw, 2.1rem); box-shadow: var(--shadow-sm);
+           position: relative; overflow: hidden; }
+  .value::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--accent); }
+  .value .pill { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.07em;
+                 text-transform: uppercase; color: var(--accent-text); background: var(--accent-bg);
+                 border: 0.5px solid var(--accent-bd); padding: 5px 13px; border-radius: 999px; }
+  .value .stmt { font-family: var(--font-display); font-weight: 600; letter-spacing: -0.01em; line-height: 1.22;
+                 font-size: clamp(20px, 3.1vw, 30px); color: var(--text-primary); margin-top: 1rem; }
+  .value .sub { font-size: 14px; color: var(--text-secondary); margin-top: 0.8rem; max-width: 640px; }
+  .value.v-info    { --accent: var(--text-info);    --accent-text: var(--text-info);    --accent-bg: var(--bg-info);    --accent-bd: var(--border-info); }
+  .value.v-success { --accent: var(--text-success); --accent-text: var(--text-success); --accent-bg: var(--bg-success); --accent-bd: var(--border-success); }
+  .value.v-violet  { --accent: var(--text-violet);  --accent-text: var(--text-violet);  --accent-bg: var(--bg-violet);  --accent-bd: var(--border-violet); }
+
+  /* ---------- footer ---------- */
+  footer { border-top: 0.5px solid var(--border-tertiary); padding: 2.4rem 0 3rem; margin-top: 1rem;
+           text-align: center; font-size: 12px; color: var(--text-tertiary); line-height: 2; }
+  footer .heart { color: var(--text-danger); font-size: 18px; vertical-align: middle; }
+  .foot-link { color: var(--text-info); text-decoration: none; border-bottom: 0.5px solid var(--border-info); }
+  .foot-link:hover { opacity: 0.75; }
+
+  /* ---------- reveal ---------- */
+  .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+
+  @media (max-width: 560px) {
+    .stats { gap: 1.4rem; } .progress-txt { font-size: 10.5px; }
+    .domain-headline { gap: 11px; }
+    .tree-body { padding-left: 18px; }
+    .leaf { padding-left: 18px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .hero-bg .blob { animation: none !important; }
+    .reveal { opacity: 1; transform: none; transition: none; }
+    .progress-bar span { transition: none; }
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="topbar">
+  <div class="bar-inner">
+    <a class="brand" href="#top" aria-label="AI Learning Lab home">
+      <svg class="mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs>
+          <linearGradient id="bg" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+            <stop style="stop-color:var(--g1)"/><stop offset="0.52" style="stop-color:var(--g2)"/><stop offset="1" style="stop-color:var(--g3)"/>
+          </linearGradient>
+        </defs>
+        <rect x="1" y="1" width="30" height="30" rx="8" stroke="url(#bg)" stroke-width="2"/>
+        <circle cx="10" cy="11" r="2.4" fill="url(#bg)"/>
+        <circle cx="22" cy="9" r="2.4" fill="url(#bg)"/>
+        <circle cx="16" cy="22" r="2.4" fill="url(#bg)"/>
+        <path d="M10 11 L22 9 M22 9 L16 22 M16 22 L10 11" stroke="url(#bg)" stroke-width="1.4" stroke-linecap="round" opacity="0.65"/>
+      </svg>
+      <span>AI Learning Lab</span>
+    </a>
+    <div class="bar-actions">
+      <a class="icon-btn" href="https://www.linkedin.com/in/ancilcleetus/" target="_blank" rel="noopener" aria-label="LinkedIn profile">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.07 2.07 0 0 1-2.07-2.07 2.07 2.07 0 1 1 2.07 2.07zm1.78 13.02H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.22.79 24 1.77 24h20.45c.98 0 1.78-.78 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg>
+      </a>
+      <a class="icon-btn" href="https://github.com/ancilcleetus/AI-Learning-Lab" target="_blank" rel="noopener" aria-label="GitHub repository">
+        <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.65 7.65 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+      </a>
+      <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle light and dark theme">
+        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <span id="top"></span>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg" aria-hidden="true">
+      <div class="grid"></div>
+      <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+    </div>
+    <div class="wrap hero-inner">
+      <span class="eyebrow"><span class="dotg"></span>Structured · Hands-On · Always Growing</span>
+      <h1><span class="h1-lead">AI Learning Lab:</span><span class="grad">A Structured, Hands-On Journey Through AI/ML</span></h1>
+      <p class="lede">A running record of learning AI and machine learning from first principles — maths, programming languages, tools, classical ML, and deep learning — one notebook at a time.</p>
+      <div class="hero-cta">
+        <a class="btn-primary" href="#tracks">Explore the tracks</a>
+      </div>
+      <div class="stats" id="stats"></div>
+    </div>
+  </section>
+
+  <!-- VALUES -->
+  <section class="block">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="kicker">The idea</span>
+        <h2>Learning in the open, one notebook at a time</h2>
+        <p>Three principles behind how this lab is organized.</p>
+      </div>
+      <div class="values">
+        <div class="value v-info reveal">
+          <span class="pill">What this is</span>
+          <p class="stmt">A structured curriculum, not a scrapbook — every topic has a place before it has content.</p>
+          <p class="sub">From Maths foundations through Programming Languages, Tools, Machine Learning, and Deep Learning, each track is broken into sub-topics and notebooks so progress is always visible, not buried in commit history.</p>
+        </div>
+        <div class="value v-success reveal">
+          <span class="pill">How it's tracked</span>
+          <p class="stmt">Every notebook links straight to GitHub, nbviewer, and Google Colab.</p>
+          <p class="sub">No setup required to read or run any notebook — pick whichever viewer fits the moment, right from its row below.</p>
+        </div>
+        <div class="value v-violet reveal">
+          <span class="pill">Where it's headed</span>
+          <p class="stmt">A refresher today, a foundation for advanced AI/ML work tomorrow.</p>
+          <p class="sub">The lab grows track by track toward classical ML, NLP, GenAI, LLMs, MLOps, and agentic AI — each addition shows up here automatically.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRACKS -->
+  <section class="block" id="tracks">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="kicker">Explore</span>
+        <h2>Browse by track</h2>
+        <p>Open a track to drill into its sub-topics, courses, and individual notebooks.</p>
+      </div>
+      <div id="track-list"><p class="status-note">Loading progress from README.md&hellip;</p></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    Built with <span class="heart">&hearts;</span> by
+    <a class="foot-link" href="https://www.linkedin.com/in/ancilcleetus/" target="_blank" rel="noopener">Ancil Cleetus</a>
+    &nbsp;&nbsp;&middot;&nbsp;&nbsp;
+    <a class="foot-link" href="https://github.com/ancilcleetus/AI-Learning-Lab" target="_blank" rel="noopener">AI Learning Lab</a>
+    &nbsp;&nbsp;&middot;&nbsp;&nbsp; MIT License
+  </div>
+</footer>
+
+<script>
+  const REPO = 'ancilcleetus/AI-Learning-Lab';
+  const BLOB_BASE = 'https://github.com/' + REPO + '/blob/main/';
+  const TREE_BASE = 'https://github.com/' + REPO + '/tree/main/';
+
+  const ICONS = {
+    github: '<svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.65 7.65 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>',
+    nbviewer: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 4h7a2 2 0 0 1 2 2v14a2 2 0 0 0-2-2H2z"/><path d="M22 4h-7a2 2 0 0 0-2 2v14a2 2 0 0 1 2-2h7z"/></svg>',
+    colab: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>'
+  };
+  const CHEV = '<svg class="chev tree-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>';
+  const ACCENTS = ['info', 'success', 'warning', 'danger', 'violet'];
+
+  function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+  function resolveUrl(relPath, kind){
+    if (/^https?:\/\//.test(relPath)) return relPath;
+    const base = kind === 'blob' ? BLOB_BASE : TREE_BASE;
+    return base + relPath.split('/').map(encodeURIComponent).join('/');
+  }
+
+  // ---------- README parsing ----------
+  function expandCols(ws){
+    let col = 0;
+    for (const ch of ws){
+      if (ch === '\t') col += 4 - (col % 4);
+      else col += 1;
+    }
+    return col;
+  }
+
+  function parseNodeContent(content){
+    let rest = content.trim();
+    let title = null, link = null;
+    const linkMatch = rest.match(/^\[([^\]]+)\]\(([^)]+)\)/);
+    if (linkMatch){
+      title = linkMatch[1];
+      link = linkMatch[2];
+      rest = rest.slice(linkMatch[0].length).trim();
+    }
+    let pct = null;
+    const pctMatch = rest.match(/!\[(\d+)%\]\(https:\/\/geps\.dev\/progress\/\d+\)/);
+    if (pctMatch){
+      pct = parseInt(pctMatch[1], 10);
+      rest = (rest.slice(0, pctMatch.index) + rest.slice(pctMatch.index + pctMatch[0].length)).trim();
+    }
+    const badges = [];
+    const badgeRe = /\[!\[Open in ([^\]]+)\]\([^)]*\)\]\(([^)]+)\)/g;
+    let bm;
+    while ((bm = badgeRe.exec(rest)) !== null){
+      badges.push({ label: bm[1], url: bm[2] });
+    }
+    rest = rest.replace(badgeRe, '').trim();
+    if (title === null){
+      title = rest || content.trim();
+      link = null;
+    }
+    return { title, link, pct, badges, children: [] };
+  }
+
+  function parseReadme(text){
+    const lines = text.split('\n');
+    const statusIdx = lines.findIndex(l => l.trim().toLowerCase().startsWith('## status'));
+    const bulletLines = [];
+    for (let i = (statusIdx >= 0 ? statusIdx + 1 : 0); i < lines.length; i++){
+      const m = lines[i].match(/^(\s*)\*\s+(.*)$/);
+      if (m) bulletLines.push({ ws: m[1], content: m[2] });
+    }
+    const root = { children: [] };
+    const stack = [{ depth: -1, node: root }];
+    for (const { ws, content } of bulletLines){
+      const depth = Math.round(expandCols(ws) / 4);
+      const node = parseNodeContent(content);
+      while (stack.length && stack[stack.length - 1].depth >= depth) stack.pop();
+      stack[stack.length - 1].node.children.push(node);
+      stack.push({ depth, node });
+    }
+    return root.children;
+  }
+
+  // ---------- rendering ----------
+  function isReferencesNode(node){
+    return node.title === 'References' && !node.link && node.pct === null && node.badges.length === 0;
+  }
+  function isLeafNode(node){
+    return node.pct !== null && node.badges.length > 0;
+  }
+
+  function progressBar(pct){
+    return '<div class="progress"><div class="progress-bar"><span data-w="' + pct + '"></span></div>'
+         + '<span class="progress-txt">' + pct + '%</span></div>';
+  }
+
+  function chipLabel(label){
+    if (/github/i.test(label)) return 'GitHub';
+    if (/nbviewer/i.test(label)) return 'nbviewer';
+    if (/colab/i.test(label)) return 'Colab';
+    return label;
+  }
+  function chipIcon(label){
+    if (/github/i.test(label)) return ICONS.github;
+    if (/nbviewer/i.test(label)) return ICONS.nbviewer;
+    if (/colab/i.test(label)) return ICONS.colab;
+    return '';
+  }
+
+  function renderLeaf(node){
+    const chips = node.badges.map(function(b){
+      const url = resolveUrl(b.url, 'blob');
+      return '<a class="chip" href="' + esc(url) + '" target="_blank" rel="noopener">' + chipIcon(b.label)
+           + '<span>' + esc(chipLabel(b.label)) + '</span></a>';
+    }).join('');
+    return '<div class="leaf"><div class="leaf-top"><span class="leaf-title">' + esc(node.title) + '</span></div>'
+         + progressBar(node.pct)
+         + '<div class="chip-row">' + chips + '</div></div>';
+  }
+
+  function renderSimplePlaceholder(node){
+    const inner = '<span class="tree-title">' + esc(node.title) + '</span>';
+    const content = node.link
+      ? '<a class="tree-simple-link" href="' + esc(resolveUrl(node.link, 'tree')) + '" target="_blank" rel="noopener">' + inner + '</a>'
+      : '<div class="tree-simple-link">' + inner + '</div>';
+    return '<div class="tree-leaf-simple">' + content
+         + (node.pct !== null ? progressBar(node.pct) : '') + '</div>';
+  }
+
+  function renderReferences(node){
+    const items = node.children.map(function(c){
+      return '<a class="ref-link" href="' + esc(c.link || '#') + '" target="_blank" rel="noopener">'
+           + '<span>' + esc(c.title) + '</span><span class="ref-go">&#8599;</span></a>';
+    }).join('');
+    return '<div class="ref-box"><span class="ref-label">References</span><div class="ref-list">' + items + '</div></div>';
+  }
+
+  function renderBranch(node){
+    const childrenHtml = node.children.map(renderNode).join('');
+    return '<details class="tree-node"><summary class="tree-summary">' + CHEV
+         + '<span class="tree-title">' + esc(node.title) + '</span>'
+         + (node.pct !== null ? '<span class="tree-pct">' + node.pct + '%</span>' : '') + '</summary>'
+         + '<div class="tree-body">'
+         + (node.pct !== null ? progressBar(node.pct) : '')
+         + '<div class="tree-children">' + childrenHtml + '</div></div></details>';
+  }
+
+  function renderNode(node){
+    if (isReferencesNode(node)) return renderReferences(node);
+    if (isLeafNode(node)) return renderLeaf(node);
+    if (node.children.length > 0) return renderBranch(node);
+    return renderSimplePlaceholder(node);
+  }
+
+  function renderTrackCard(track, idx){
+    const accent = ACCENTS[idx % ACCENTS.length];
+    const childrenHtml = track.children.map(renderNode).join('');
+    return '<div class="domain accent-' + accent + ' reveal" style="transition-delay:' + (idx * 70) + 'ms">'
+         + '<button class="domain-head" aria-expanded="false">'
+         +   '<div class="domain-headline"><span class="domain-dot"></span>'
+         +     '<div class="domain-text"><h3>' + esc(track.title) + '</h3></div>' + CHEV + '</div>'
+         +   (track.pct !== null ? progressBar(track.pct) : '')
+         + '</button>'
+         + '<div class="domain-panel"><div class="domain-panel-inner"><div class="tree-root">' + childrenHtml + '</div></div></div>'
+         + '</div>';
+  }
+
+  // ---------- stats ----------
+  function computeStats(tracks){
+    const trackCount = tracks.length;
+    const avgPct = trackCount
+      ? Math.round(tracks.reduce(function(s, t){ return s + (t.pct || 0); }, 0) / trackCount)
+      : 0;
+    let leafTotal = 0, leafDone = 0;
+    (function walk(nodes){
+      nodes.forEach(function(n){
+        if (isLeafNode(n)){ leafTotal++; if (n.pct === 100) leafDone++; }
+        if (n.children && n.children.length) walk(n.children);
+      });
+    })(tracks);
+    return { trackCount: trackCount, avgPct: avgPct, leafTotal: leafTotal, leafDone: leafDone };
+  }
+
+  function renderStats(stats){
+    const el = document.getElementById('stats');
+    el.innerHTML =
+      '<div class="stat"><span class="num" data-target="' + stats.avgPct + '" data-suffix="%">0</span><span class="lbl">overall progress</span></div>'
+    + '<div class="stat"><span class="num" data-target="' + stats.trackCount + '">0</span><span class="lbl">learning tracks</span></div>'
+    + '<div class="stat"><span class="num" data-target="' + stats.leafDone + '">0</span><span class="lbl">of ' + stats.leafTotal + ' notebooks complete</span></div>';
+  }
+
+  // ---------- init ----------
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function setupReveal(){
+    const els = document.querySelectorAll('.reveal');
+    if (reduceMotion || !('IntersectionObserver' in window)){
+      els.forEach(function(el){ el.classList.add('in'); });
+      return;
+    }
+    const io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){ if (en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    els.forEach(function(el){ io.observe(el); });
+  }
+
+  function setupProgress(){
+    const bars = document.querySelectorAll('.progress-bar span');
+    const fill = function(){ bars.forEach(function(b){ b.style.width = (b.getAttribute('data-w') || 0) + '%'; }); };
+    if (reduceMotion || !('IntersectionObserver' in window)){ fill(); return; }
+    const io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if (en.isIntersecting){ en.target.style.width = (en.target.getAttribute('data-w') || 0) + '%'; io.unobserve(en.target); }
+      });
+    }, { threshold: 0.5 });
+    bars.forEach(function(b){ io.observe(b); });
+  }
+
+  function setupCounters(){
+    const nums = document.querySelectorAll('#stats .num');
+    const run = function(el){
+      const target = parseInt(el.getAttribute('data-target'), 10) || 0;
+      const suffix = el.getAttribute('data-suffix') || '';
+      if (reduceMotion){ el.textContent = target + suffix; return; }
+      const dur = 1100, start = performance.now();
+      const tick = function(now){
+        const p = Math.min(1, (now - start) / dur);
+        const eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(eased * target) + suffix;
+        if (p < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    };
+    if (!('IntersectionObserver' in window)){ nums.forEach(run); return; }
+    const io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){ if (en.isIntersecting){ run(en.target); io.unobserve(en.target); } });
+    }, { threshold: 0.6 });
+    nums.forEach(function(n){ io.observe(n); });
+  }
+
+  function setupTrackAccordion(){
+    const wrap = document.getElementById('track-list');
+    wrap.querySelectorAll('.domain-head').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        const panel = btn.parentElement.querySelector('.domain-panel');
+        const open = btn.getAttribute('aria-expanded') === 'true';
+        if (open){
+          panel.style.maxHeight = '0px';
+          btn.setAttribute('aria-expanded', 'false');
+        } else {
+          const inner = panel.querySelector('.domain-panel-inner');
+          panel.style.maxHeight = inner.scrollHeight + 'px';
+          btn.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+    // keep an open panel sized correctly when a nested <details> toggles inside it
+    wrap.addEventListener('toggle', function(e){
+      if (e.target.tagName.toLowerCase() !== 'details') return;
+      const panel = e.target.closest('.domain-panel');
+      if (!panel) return;
+      const btn = panel.previousElementSibling;
+      if (btn && btn.getAttribute('aria-expanded') === 'true'){
+        const inner = panel.querySelector('.domain-panel-inner');
+        panel.style.maxHeight = inner.scrollHeight + 'px';
+      }
+    }, true);
+    window.addEventListener('resize', function(){
+      wrap.querySelectorAll('.domain-head[aria-expanded="true"]').forEach(function(btn){
+        const panel = btn.parentElement.querySelector('.domain-panel');
+        const inner = panel.querySelector('.domain-panel-inner');
+        panel.style.maxHeight = inner.scrollHeight + 'px';
+      });
+    });
+  }
+
+  document.getElementById('themeToggle').addEventListener('click', function(){
+    const cur = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+    const next = cur === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    try { localStorage.setItem('ail-theme', next); } catch (e) {}
+  });
+
+  async function init(){
+    const listEl = document.getElementById('track-list');
+    try {
+      const res = await fetch('README.md', { cache: 'no-store' });
+      if (!res.ok) throw new Error('README.md not found (' + res.status + ')');
+      const text = await res.text();
+      const tracks = parseReadme(text);
+      if (!tracks.length) throw new Error('No tracks found in README.md');
+
+      renderStats(computeStats(tracks));
+      listEl.innerHTML = tracks.map(renderTrackCard).join('');
+      setupTrackAccordion();
+    } catch (err) {
+      renderStats({ avgPct: 0, trackCount: 0, leafDone: 0, leafTotal: 0 });
+      listEl.innerHTML = '<p class="status-note">Could not load live progress from README.md ('
+        + esc(err.message) + '). You can browse the tracks directly on '
+        + '<a href="https://github.com/' + REPO + '#status" target="_blank" rel="noopener">GitHub</a>.</p>';
+    }
+    setupReveal();
+    setupProgress();
+    setupCounters();
+  }
+
+  init();
+</script>
+</body>
+</html>
