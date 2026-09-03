@@ -20,9 +20,11 @@ Deepen your understanding of decision-making processes in Python with this cours
 
 ![Certificate](data/certificates/03_Mastering_Control_Structures_in_Python-certificate.png)
 
-## Course 4: Exploring Iterations and Loops in Python
+## Course 4: Exploring Iterations and Loops in Python ![10%](https://geps.dev/progress/10) [![Open in GitHub](https://img.shields.io/badge/GitHub-181717?logo=github&logoColor=white&style=flat)](04_Exploring_Iterations_and_Loops_in_Python.ipynb) [![Open in nbviewer](https://img.shields.io/badge/Jupyter%20nbviewer-F37626?logo=jupyter&logoColor=white&style=flat)](https://nbviewer.org/github/ancilcleetus/AI-Learning-Lab/blob/main/Programming-Languages/Python/Introduction-to-Programming-with-Python/04_Exploring_Iterations_and_Loops_in_Python.ipynb) [![Open in Colab](https://img.shields.io/badge/Google%20Colab-F9AB00?logo=googlecolab&logoColor=white&style=flat)](https://colab.research.google.com/github/ancilcleetus/AI-Learning-Lab/blob/main/Programming-Languages/Python/Introduction-to-Programming-with-Python/04_Exploring_Iterations_and_Loops_in_Python.ipynb)
 
 Discover the power and flexibility of loops in Python as you learn to automate repetitive tasks. This course covers `for` loops, `while` loops, and introduces advanced concepts like loop controls and nested loops. By the end of this course, you'll be able to use loops to enhance the efficiency and complexity of your code.
+
+![Certificate](data/certificates/04_Exploring_Iterations_and_Loops_in_Python-certificate.png)
 
 ## Course 5: Defining and Utilizing Functions in Python
 
