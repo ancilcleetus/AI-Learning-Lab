@@ -216,6 +216,15 @@
           transition: color 0.15s, border-color 0.15s, transform 0.15s; }
   .chip svg { width: 13px; height: 13px; flex-shrink: 0; }
   .chip:hover { color: var(--text-info); border-color: var(--border-info); transform: translateY(-1px); }
+  .chip.cert-chip { color: var(--text-success); background: var(--bg-success); border-color: var(--border-success); }
+  .chip.cert-chip:hover { color: var(--text-success); opacity: 0.82; transform: translateY(-1px); }
+
+  .tree-cert-btn { display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px;
+                   border-radius: 50%; border: 0.5px solid var(--border-violet); background: var(--bg-violet);
+                   color: var(--text-violet); cursor: pointer; flex-shrink: 0;
+                   transition: transform 0.15s, box-shadow 0.15s; }
+  .tree-cert-btn:hover { transform: translateY(-1px); box-shadow: var(--shadow-sm); }
+  .tree-cert-btn svg { width: 13px; height: 13px; }
 
   .ref-box { padding: 13px 4px 15px 4px; }
   .ref-label { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.07em;
@@ -441,7 +450,8 @@
   const ICONS = {
     github: '<svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.65 7.65 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>',
     nbviewer: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 4h7a2 2 0 0 1 2 2v14a2 2 0 0 0-2-2H2z"/><path d="M22 4h-7a2 2 0 0 0-2 2v14a2 2 0 0 1 2-2h7z"/></svg>',
-    colab: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>'
+    colab: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>',
+    certificate: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="6"/><path d="M8.21 13.89L7 23l5-3 5 3-1.21-9.12"/></svg>'
   };
   const CHEV = '<svg class="chev tree-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>';
   const ACCENTS = ['info', 'success', 'warning', 'danger', 'violet'];
@@ -539,13 +549,21 @@
     return '';
   }
 
+  function leafFileKeyFromBadges(badges){
+    const gh = badges.find(function(b){ return /github/i.test(b.label) && !/^https?:\/\//.test(b.url); });
+    if (!gh) return null;
+    return gh.url.replace(/\.[a-zA-Z0-9]+$/, '');
+  }
+
   function renderLeaf(node){
     const chips = node.badges.map(function(b){
       const url = resolveUrl(b.url, 'blob');
       return '<a class="chip" href="' + esc(url) + '" target="_blank" rel="noopener">' + chipIcon(b.label)
            + '<span>' + esc(chipLabel(b.label)) + '</span></a>';
     }).join('');
-    return '<div class="leaf"><div class="leaf-top"><span class="leaf-title">' + esc(node.title) + '</span></div>'
+    const fileKey = leafFileKeyFromBadges(node.badges);
+    const keyAttr = fileKey ? ' data-cert-key="' + esc(fileKey) + '"' : '';
+    return '<div class="leaf"' + keyAttr + '><div class="leaf-top"><span class="leaf-title">' + esc(node.title) + '</span></div>'
          + progressBar(node.pct)
          + '<div class="chip-row">' + chips + '</div></div>';
   }
@@ -569,7 +587,8 @@
 
   function renderBranch(node){
     const childrenHtml = node.children.map(renderNode).join('');
-    return '<details class="tree-node"><summary class="tree-summary">' + CHEV
+    const keyAttr = node.link ? ' data-cert-key="' + esc(node.link) + '"' : '';
+    return '<details class="tree-node"' + keyAttr + '><summary class="tree-summary">' + CHEV
          + '<span class="tree-title">' + esc(node.title) + '</span>'
          + (node.pct !== null ? '<span class="tree-pct">' + node.pct + '%</span>' : '') + '</summary>'
          + '<div class="tree-body">'
@@ -649,6 +668,12 @@
     return out;
   }
 
+  function certBasenameFromPath(relImg){
+    const file = relImg.split('/').pop();
+    const noExt = file.replace(/\.[a-zA-Z0-9]+$/, '');
+    return noExt.replace(/-certificate$/i, '');
+  }
+
   // Parse a sub-folder README's text for certificate images.
   // Anything before the first "## " heading is a Learning Path certificate;
   // anything after a "## " heading belongs to that course.
@@ -674,9 +699,10 @@
         if (/^https?:\/\//.test(relImg)) continue; // only same-repo relative images are verifiable
         const imgSrc = folderPath + '/' + relImg.replace(/^\.?\//, '');
         if (!sawHeading){
-          found.push({ type: 'learning-path', title: folderTitle, imgSrc: imgSrc });
+          found.push({ type: 'learning-path', title: folderTitle, imgSrc: imgSrc, matchKey: folderPath });
         } else {
-          found.push({ type: 'course', title: (currentCourseTitle || folderTitle).replace(/^Course\s*\d+:\s*/i, ''), imgSrc: imgSrc });
+          const matchKey = folderPath + '/' + certBasenameFromPath(relImg);
+          found.push({ type: 'course', title: (currentCourseTitle || folderTitle).replace(/^Course\s*\d+:\s*/i, ''), imgSrc: imgSrc, matchKey: matchKey });
         }
       }
     }
@@ -759,6 +785,45 @@
       btn.addEventListener('click', function(){
         openLightbox(btn.getAttribute('data-src'), btn.getAttribute('data-caption'));
       });
+    });
+  }
+
+  function applyInlineCertificateIndicators(certs){
+    certs.forEach(function(cert){
+      if (cert.type === 'learning-path'){
+        const summary = document.querySelector('.tree-node[data-cert-key="' + cert.matchKey + '"] > summary.tree-summary');
+        if (!summary || summary.querySelector('.tree-cert-btn')) return;
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'tree-cert-btn';
+        btn.setAttribute('aria-label', 'View Learning Path certificate');
+        btn.title = 'View Learning Path certificate';
+        btn.innerHTML = ICONS.certificate;
+        btn.addEventListener('click', function(e){
+          e.preventDefault();
+          e.stopPropagation();
+          openLightbox(cert.imgSrc, cert.title + ' — Learning Path Certificate');
+        });
+        const pctEl = summary.querySelector('.tree-pct');
+        if (pctEl) summary.insertBefore(btn, pctEl); else summary.appendChild(btn);
+      } else {
+        const row = document.querySelector('.leaf[data-cert-key="' + cert.matchKey + '"] .chip-row');
+        if (!row || row.querySelector('.cert-chip')) return;
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'chip cert-chip';
+        btn.innerHTML = ICONS.certificate + '<span>Certificate</span>';
+        btn.addEventListener('click', function(){
+          openLightbox(cert.imgSrc, cert.title + ' — Course Certificate');
+        });
+        row.appendChild(btn);
+      }
+    });
+    // if a track panel is already open, resize it so newly-added badges aren't clipped
+    document.querySelectorAll('.domain-head[aria-expanded="true"]').forEach(function(btn){
+      const panel = btn.parentElement.querySelector('.domain-panel');
+      const inner = panel.querySelector('.domain-panel-inner');
+      panel.style.maxHeight = inner.scrollHeight + 'px';
     });
   }
 
@@ -905,6 +970,7 @@
         const certs = await discoverCertificates(tracks);
         renderCertGallery(certs, tracks);
         animateCertStat(certs.length);
+        applyInlineCertificateIndicators(certs);
       } catch (e) {
         certEl.innerHTML = '<p class="status-note">Could not check for certificates right now.</p>';
         animateCertStat(0);
