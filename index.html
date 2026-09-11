@@ -248,6 +248,38 @@
   .value.v-success { --accent: var(--text-success); --accent-text: var(--text-success); --accent-bg: var(--bg-success); --accent-bd: var(--border-success); }
   .value.v-violet  { --accent: var(--text-violet);  --accent-text: var(--text-violet);  --accent-bg: var(--bg-violet);  --accent-bd: var(--border-violet); }
 
+  /* ---------- certificates ---------- */
+  .cert-group { margin-bottom: 1.9rem; }
+  .cert-group:last-child { margin-bottom: 0; }
+  .cert-group-title { display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 700;
+                       color: var(--text-secondary); margin-bottom: 0.9rem; }
+  .cert-group-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+  .cert-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; }
+  .cert-card { background: var(--bg-primary); border: 0.5px solid var(--border-tertiary); border-radius: var(--radius-lg);
+               overflow: hidden; box-shadow: var(--shadow-sm); cursor: pointer; padding: 0; text-align: left;
+               font-family: var(--font); transition: transform 0.18s, box-shadow 0.18s, border-color 0.18s; }
+  .cert-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); border-color: var(--border-secondary); }
+  .cert-thumb-wrap { aspect-ratio: 4 / 3; overflow: hidden; background: var(--bg-tertiary); }
+  .cert-thumb-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .cert-card-body { padding: 12px 14px 14px; }
+  .cert-type { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+               padding: 3px 9px; border-radius: 999px; margin-bottom: 7px; }
+  .cert-type.learning-path { color: var(--text-violet); background: var(--bg-violet); border: 0.5px solid var(--border-violet); }
+  .cert-type.course { color: var(--text-success); background: var(--bg-success); border: 0.5px solid var(--border-success); }
+  .cert-card-title { font-size: 13px; font-weight: 600; color: var(--text-primary); line-height: 1.35; }
+
+  .lightbox { position: fixed; inset: 0; z-index: 300; display: none; align-items: center; justify-content: center;
+              padding: 2rem; background: rgba(10,10,8,0.82); backdrop-filter: blur(3px); }
+  .lightbox.open { display: flex; }
+  .lightbox-inner { position: relative; max-width: min(92vw, 980px); max-height: 88vh; }
+  .lightbox-inner img { display: block; max-width: 100%; max-height: 88vh; border-radius: var(--radius-md);
+                         box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
+  .lightbox-caption { color: #f1f0ea; font-size: 13px; text-align: center; margin-top: 12px; opacity: 0.85; }
+  .lightbox-close { position: absolute; top: -18px; right: -18px; width: 36px; height: 36px; border-radius: 50%;
+                     background: var(--bg-primary); color: var(--text-primary); border: 0.5px solid var(--border-secondary);
+                     display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: var(--shadow-md); }
+  .lightbox-close svg { width: 16px; height: 16px; }
+
   /* ---------- footer ---------- */
   footer { border-top: 0.5px solid var(--border-tertiary); padding: 2.4rem 0 3rem; margin-top: 1rem;
            text-align: center; font-size: 12px; color: var(--text-tertiary); line-height: 2; }
@@ -264,6 +296,7 @@
     .domain-headline { gap: 11px; }
     .tree-body { padding-left: 18px; }
     .leaf { padding-left: 18px; }
+    .cert-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
   }
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
@@ -366,7 +399,29 @@
       <div id="track-list"><p class="status-note">Loading progress from README.md&hellip;</p></div>
     </div>
   </section>
+
+  <!-- CERTIFICATES -->
+  <section class="block" id="certificates">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="kicker">Proof of work</span>
+        <h2>Certificates</h2>
+        <p>Learning Path and Course certificates earned so far, pulled live from <a class="foot-link" href="https://github.com/ancilcleetus/AI-Learning-Lab" target="_blank" rel="noopener">AI Learning Lab GitHub Repo</a>.</p>
+      </div>
+      <div id="cert-gallery"><p class="status-note">Checking for certificates&hellip;</p></div>
+    </div>
+  </section>
 </main>
+
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Certificate preview">
+  <div class="lightbox-inner">
+    <button class="lightbox-close" id="lightboxClose" aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <img id="lightboxImg" src="" alt="">
+    <p class="lightbox-caption" id="lightboxCaption"></p>
+  </div>
+</div>
 
 <footer>
   <div class="wrap">
@@ -563,7 +618,169 @@
     el.innerHTML =
       '<div class="stat"><span class="num" data-target="' + stats.avgPct + '" data-suffix="%">0</span><span class="lbl">overall progress</span></div>'
     + '<div class="stat"><span class="num" data-target="' + stats.trackCount + '">0</span><span class="lbl">learning tracks</span></div>'
-    + '<div class="stat"><span class="num" data-target="' + stats.leafDone + '">0</span><span class="lbl">of ' + stats.leafTotal + ' notebooks complete</span></div>';
+    + '<div class="stat"><span class="num" data-target="' + stats.leafDone + '">0</span><span class="lbl">of ' + stats.leafTotal + ' notebooks complete</span></div>'
+    + '<div class="stat"><span class="num cert-num" id="certStatNum">&ndash;</span><span class="lbl">certificates earned</span></div>';
+  }
+
+  function animateCertStat(count){
+    const el = document.getElementById('certStatNum');
+    if (!el) return;
+    if (reduceMotion){ el.textContent = count; return; }
+    const dur = 1100, start = performance.now();
+    const tick = function(now){
+      const p = Math.min(1, (now - start) / dur);
+      const eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(eased * count);
+      if (p < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }
+
+  // ---------- certificates ----------
+  function collectFolderNodes(tracks){
+    // every node with a folder link is a candidate location for its own README.md
+    const out = [];
+    (function walk(nodes){
+      nodes.forEach(function(n){
+        if (n.link && !/^https?:\/\//.test(n.link)) out.push(n);
+        if (n.children && n.children.length) walk(n.children);
+      });
+    })(tracks);
+    return out;
+  }
+
+  // Parse a sub-folder README's text for certificate images.
+  // Anything before the first "## " heading is a Learning Path certificate;
+  // anything after a "## " heading belongs to that course.
+  function parseCertificatesFromReadme(text, folderPath, folderTitle){
+    const lines = text.split('\n');
+    const found = [];
+    let currentCourseTitle = null;
+    let sawHeading = false;
+    for (const line of lines){
+      const headingMatch = line.match(/^##\s+(.+?)\s*$/);
+      if (headingMatch){
+        sawHeading = true;
+        currentCourseTitle = headingMatch[1]
+          .replace(/\[!\[.*?\]\([^)]*\)\]\([^)]*\)/g, '')
+          .replace(/!\[.*?\]\([^)]*\)/g, '')
+          .replace(/\s+/g, ' ')
+          .trim();
+        continue;
+      }
+      const certMatch = line.match(/!\[Certificate\]\(([^)]+)\)/i);
+      if (certMatch){
+        const relImg = certMatch[1].trim();
+        if (/^https?:\/\//.test(relImg)) continue; // only same-repo relative images are verifiable
+        const imgSrc = folderPath + '/' + relImg.replace(/^\.?\//, '');
+        if (!sawHeading){
+          found.push({ type: 'learning-path', title: folderTitle, imgSrc: imgSrc });
+        } else {
+          found.push({ type: 'course', title: (currentCourseTitle || folderTitle).replace(/^Course\s*\d+:\s*/i, ''), imgSrc: imgSrc });
+        }
+      }
+    }
+    return found;
+  }
+
+  // Only keep certificates whose image file actually loads.
+  function verifyImage(imgSrc){
+    return new Promise(function(resolve){
+      const img = new Image();
+      img.onload = function(){ resolve(true); };
+      img.onerror = function(){ resolve(false); };
+      img.src = imgSrc;
+    });
+  }
+
+  async function discoverCertificates(tracks){
+    const folderNodes = collectFolderNodes(tracks);
+    const trackOf = new Map();
+    tracks.forEach(function(t){
+      (function walk(n, top){
+        trackOf.set(n, top);
+        (n.children || []).forEach(function(c){ walk(c, top); });
+      })(t, t);
+    });
+
+    const perFolder = await Promise.all(folderNodes.map(async function(node){
+      try {
+        const res = await fetch(node.link + '/README.md', { cache: 'no-store' });
+        if (!res.ok) return [];
+        const text = await res.text();
+        const certs = parseCertificatesFromReadme(text, node.link, node.title);
+        if (!certs.length) return [];
+        const verified = await Promise.all(certs.map(async function(c){
+          const ok = await verifyImage(c.imgSrc);
+          return ok ? c : null;
+        }));
+        const top = trackOf.get(node);
+        return verified.filter(Boolean).map(function(c){ return Object.assign({}, c, { trackTitle: top ? top.title : '' }); });
+      } catch (e) {
+        return [];
+      }
+    }));
+
+    return perFolder.flat();
+  }
+
+  function renderCertGallery(certs, tracks){
+    const el = document.getElementById('cert-gallery');
+    if (!certs.length){
+      el.innerHTML = '<p class="status-note">No verified certificates yet — as courses and learning paths are completed and certificates added to the repo, they will appear here automatically.</p>';
+      return;
+    }
+    const order = tracks.map(function(t){ return t.title; });
+    const byTrack = new Map();
+    certs.forEach(function(c){
+      if (!byTrack.has(c.trackTitle)) byTrack.set(c.trackTitle, []);
+      byTrack.get(c.trackTitle).push(c);
+    });
+    const trackNames = Array.from(byTrack.keys()).sort(function(a, b){ return order.indexOf(a) - order.indexOf(b); });
+
+    el.innerHTML = trackNames.map(function(trackName, idx){
+      const accent = ACCENTS[order.indexOf(trackName) % ACCENTS.length] || ACCENTS[idx % ACCENTS.length];
+      const items = byTrack.get(trackName).slice().sort(function(a, b){
+        if (a.type === b.type) return 0;
+        return a.type === 'learning-path' ? -1 : 1;
+      });
+      const cards = items.map(function(c){
+        const typeLabel = c.type === 'learning-path' ? 'Learning Path' : 'Course';
+        return '<button class="cert-card" data-src="' + esc(c.imgSrc) + '" data-caption="' + esc(c.title + ' — ' + trackName) + '">'
+             + '<div class="cert-thumb-wrap"><img src="' + esc(c.imgSrc) + '" alt="' + esc(c.title) + ' certificate" loading="lazy"></div>'
+             + '<div class="cert-card-body"><span class="cert-type ' + c.type + '">' + typeLabel + '</span>'
+             + '<div class="cert-card-title">' + esc(c.title) + '</div></div></button>';
+      }).join('');
+      return '<div class="cert-group reveal"><div class="cert-group-title"><span class="cert-group-dot" style="background:var(--text-' + accent + ')"></span>'
+           + esc(trackName) + '</div><div class="cert-grid">' + cards + '</div></div>';
+    }).join('');
+
+    el.querySelectorAll('.cert-card').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        openLightbox(btn.getAttribute('data-src'), btn.getAttribute('data-caption'));
+      });
+    });
+  }
+
+  function openLightbox(src, caption){
+    const lb = document.getElementById('lightbox');
+    document.getElementById('lightboxImg').src = src;
+    document.getElementById('lightboxImg').alt = caption;
+    document.getElementById('lightboxCaption').textContent = caption;
+    lb.classList.add('open');
+  }
+  function closeLightbox(){
+    document.getElementById('lightbox').classList.remove('open');
+    document.getElementById('lightboxImg').src = '';
+  }
+  function setupLightbox(){
+    document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
+    document.getElementById('lightbox').addEventListener('click', function(e){
+      if (e.target.id === 'lightbox') closeLightbox();
+    });
+    document.addEventListener('keydown', function(e){
+      if (e.key === 'Escape') closeLightbox();
+    });
   }
 
   // ---------- init ----------
@@ -594,7 +811,7 @@
   }
 
   function setupCounters(){
-    const nums = document.querySelectorAll('#stats .num');
+    const nums = document.querySelectorAll('#stats .num:not(.cert-num)');
     const run = function(el){
       const target = parseInt(el.getAttribute('data-target'), 10) || 0;
       const suffix = el.getAttribute('data-suffix') || '';
@@ -660,11 +877,13 @@
 
   async function init(){
     const listEl = document.getElementById('track-list');
+    const certEl = document.getElementById('cert-gallery');
+    let tracks = [];
     try {
       const res = await fetch('README.md', { cache: 'no-store' });
       if (!res.ok) throw new Error('README.md not found (' + res.status + ')');
       const text = await res.text();
-      const tracks = parseReadme(text);
+      tracks = parseReadme(text);
       if (!tracks.length) throw new Error('No tracks found in README.md');
 
       renderStats(computeStats(tracks));
@@ -679,6 +898,23 @@
     setupReveal();
     setupProgress();
     setupCounters();
+    setupLightbox();
+
+    if (tracks.length){
+      try {
+        const certs = await discoverCertificates(tracks);
+        renderCertGallery(certs, tracks);
+        animateCertStat(certs.length);
+      } catch (e) {
+        certEl.innerHTML = '<p class="status-note">Could not check for certificates right now.</p>';
+        animateCertStat(0);
+      }
+    } else {
+      certEl.innerHTML = '<p class="status-note">Certificates will appear here once track data loads.</p>';
+      animateCertStat(0);
+    }
+    setupReveal();
+    setupProgress();
   }
 
   init();
