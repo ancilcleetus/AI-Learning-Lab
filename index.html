@@ -219,12 +219,8 @@
   .chip.cert-chip { color: var(--text-success); background: var(--bg-success); border-color: var(--border-success); }
   .chip.cert-chip:hover { color: var(--text-success); opacity: 0.82; transform: translateY(-1px); }
 
-  .tree-cert-btn { display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px;
-                   border-radius: 50%; border: 0.5px solid var(--border-violet); background: var(--bg-violet);
-                   color: var(--text-violet); cursor: pointer; flex-shrink: 0;
-                   transition: transform 0.15s, box-shadow 0.15s; }
-  .tree-cert-btn:hover { transform: translateY(-1px); box-shadow: var(--shadow-sm); }
-  .tree-cert-btn svg { width: 13px; height: 13px; }
+  .chip.tree-cert-chip { color: var(--text-violet); background: var(--bg-violet); border-color: var(--border-violet); flex-shrink: 0; }
+  .chip.tree-cert-chip:hover { color: var(--text-violet); opacity: 0.82; transform: translateY(-1px); }
 
   .ref-box { padding: 13px 4px 15px 4px; }
   .ref-label { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.07em;
@@ -792,13 +788,12 @@
     certs.forEach(function(cert){
       if (cert.type === 'learning-path'){
         const summary = document.querySelector('.tree-node[data-cert-key="' + cert.matchKey + '"] > summary.tree-summary');
-        if (!summary || summary.querySelector('.tree-cert-btn')) return;
+        if (!summary || summary.querySelector('.tree-cert-chip')) return;
         const btn = document.createElement('button');
         btn.type = 'button';
-        btn.className = 'tree-cert-btn';
+        btn.className = 'chip tree-cert-chip';
         btn.setAttribute('aria-label', 'View Learning Path certificate');
-        btn.title = 'View Learning Path certificate';
-        btn.innerHTML = ICONS.certificate;
+        btn.innerHTML = ICONS.certificate + '<span>Certificate</span>';
         btn.addEventListener('click', function(e){
           e.preventDefault();
           e.stopPropagation();
