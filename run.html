@@ -182,6 +182,7 @@
 
   const params = new URLSearchParams(window.location.search);
   const filePath = params.get('file');
+  const titleParam = params.get('title');
 
   const editor = document.getElementById('editor');
   const runBtn = document.getElementById('runBtn');
@@ -226,7 +227,7 @@
       return;
     }
 
-    document.getElementById('pageTitle').textContent = humanizeFilename(filePath);
+    document.getElementById('pageTitle').textContent = titleParam || humanizeFilename(filePath);
     document.getElementById('filePath').textContent = filePath;
     document.getElementById('breadcrumb').textContent = humanizeBreadcrumb(filePath) || 'AI Learning Lab';
     document.getElementById('githubChip').href = 'https://github.com/ancilcleetus/AI-Learning-Lab/blob/main/' + filePath.split('/').map(encodeURIComponent).join('/');

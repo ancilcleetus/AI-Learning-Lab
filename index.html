@@ -559,7 +559,11 @@
       // Only the GitHub badge is a relative repo path that needs the blob-URL treatment.
       // nbviewer/Colab links are already absolute; a Run-in-Browser link is relative to
       // this site itself (run.html?file=...) and must NOT be rewritten to a GitHub URL.
-      const url = /github/i.test(b.label) ? resolveUrl(b.url, 'blob') : b.url;
+      let url = /github/i.test(b.label) ? resolveUrl(b.url, 'blob') : b.url;
+      if (/run/i.test(b.label)){
+        // Carry the real README title through so run.html shows it instead of guessing from the filename.
+        url += (url.indexOf('?') === -1 ? '?' : '&') + 'title=' + encodeURIComponent(node.title);
+      }
       return '<a class="chip" href="' + esc(url) + '" target="_blank" rel="noopener">' + chipIcon(b.label)
            + '<span>' + esc(chipLabel(b.label)) + '</span></a>';
     }).join('');
