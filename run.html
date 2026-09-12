@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Run Python — AI Learning Lab</title>
+<script src="https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg-primary: #ffffff; --bg-secondary: #f5f4f0; --bg-tertiary: #eeece6;
+    --bg-success: #e1f5ee; --bg-danger: #fcebeb; --bg-violet: #f0eafb; --bg-info: #e6f1fb;
+    --text-primary: #1a1a18; --text-secondary: #5f5e5a; --text-tertiary: #888780;
+    --text-success: #0f6e56; --text-danger: #a32d2d; --text-violet: #6d3bbf; --text-info: #185fa5;
+    --border-tertiary: rgba(0,0,0,0.12); --border-secondary: rgba(0,0,0,0.22);
+    --border-success: #5dcaa5; --border-danger: #e24b4a; --border-violet: #b69ae6; --border-info: #85b7eb;
+    --radius-md: 8px; --radius-lg: 12px; --radius-xl: 18px;
+    --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+    --g1: #2563eb; --g2: #4f46e5; --g3: #7c3aed;
+    --grad: linear-gradient(100deg, var(--g1) 0%, var(--g2) 52%, var(--g3) 100%);
+    --shadow-sm: 0 1px 2px rgba(20,20,16,0.05);
+    --shadow-md: 0 1px 2px rgba(20,20,16,0.05), 0 10px 28px rgba(20,20,16,0.07);
+  }
+  :root[data-theme="dark"] {
+    --bg-primary: #1c1c1a; --bg-secondary: #252522; --bg-tertiary: #161614;
+    --bg-success: #04342c; --bg-danger: #501313; --bg-violet: #2c1a52; --bg-info: #042c53;
+    --text-primary: #e8e6de; --text-secondary: #b4b2a9; --text-tertiary: #73726c;
+    --text-success: #5dcaa5; --text-danger: #f09595; --text-violet: #bba3f2; --text-info: #85b7eb;
+    --border-tertiary: rgba(255,255,255,0.10); --border-secondary: rgba(255,255,255,0.20);
+    --border-success: #0f6e56; --border-danger: #a32d2d; --border-violet: #6d3bbf; --border-info: #185fa5;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme]) {
+      --bg-primary: #1c1c1a; --bg-secondary: #252522; --bg-tertiary: #161614;
+      --bg-success: #04342c; --bg-danger: #501313; --bg-violet: #2c1a52; --bg-info: #042c53;
+      --text-primary: #e8e6de; --text-secondary: #b4b2a9; --text-tertiary: #73726c;
+      --text-success: #5dcaa5; --text-danger: #f09595; --text-violet: #bba3f2; --text-info: #85b7eb;
+      --border-tertiary: rgba(255,255,255,0.10); --border-secondary: rgba(255,255,255,0.20);
+      --border-success: #0f6e56; --border-danger: #a32d2d; --border-violet: #6d3bbf; --border-info: #185fa5;
+    }
+  }
+  body { font-family: var(--font); background: var(--bg-tertiary); color: var(--text-primary);
+         line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 900px; margin: 0 auto; padding: 1.6rem 1.25rem 4rem; }
+  a { color: inherit; }
+
+  .topbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 1.4rem; }
+  .back-link { display: inline-flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 600;
+               color: var(--text-secondary); text-decoration: none; }
+  .back-link:hover { color: var(--text-primary); }
+  .back-link svg { width: 15px; height: 15px; }
+  .icon-btn { width: 34px; height: 34px; border-radius: var(--radius-md); border: 0.5px solid var(--border-tertiary);
+              background: var(--bg-primary); color: var(--text-secondary); cursor: pointer;
+              display: inline-flex; align-items: center; justify-content: center; text-decoration: none; }
+  .icon-btn svg { width: 16px; height: 16px; }
+  .icon-btn:hover { color: var(--text-primary); }
+
+  header.page-head { margin-bottom: 1.4rem; }
+  .kicker { font-size: 11.5px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+            color: var(--text-secondary); }
+  h1 { font-size: clamp(20px, 3.6vw, 26px); font-weight: 600; letter-spacing: -0.01em; margin-top: 0.4rem; }
+  .file-row { display: flex; align-items: center; gap: 10px; margin-top: 0.6rem; flex-wrap: wrap; }
+  .file-path { font-family: var(--font-mono); font-size: 12.5px; color: var(--text-tertiary); }
+  .gh-chip { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600;
+             color: var(--text-secondary); background: var(--bg-primary); border: 0.5px solid var(--border-tertiary);
+             border-radius: 999px; padding: 5px 11px 5px 9px; text-decoration: none; }
+  .gh-chip:hover { color: var(--text-info); border-color: var(--border-info); }
+  .gh-chip svg { width: 13px; height: 13px; }
+
+  .panel { background: var(--bg-primary); border: 0.5px solid var(--border-tertiary); border-radius: var(--radius-xl);
+           box-shadow: var(--shadow-sm); overflow: hidden; margin-bottom: 1.1rem; }
+  .panel-head { display: flex; align-items: center; justify-content: space-between; gap: 10px;
+                padding: 0.7rem 1rem; border-bottom: 0.5px solid var(--border-tertiary); background: var(--bg-secondary); }
+  .panel-head .label { font-size: 12px; font-weight: 600; color: var(--text-secondary); }
+  .btn-row { display: flex; gap: 8px; }
+  button { font-family: var(--font); cursor: pointer; border: 0; }
+  .btn-run { display: inline-flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 600; color: #fff;
+             background: var(--grad); padding: 8px 16px; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); }
+  .btn-run:disabled { opacity: 0.55; cursor: default; }
+  .btn-run svg { width: 13px; height: 13px; }
+  .btn-ghost { font-size: 13px; font-weight: 600; color: var(--text-secondary); background: var(--bg-primary);
+               border: 0.5px solid var(--border-secondary) !important; padding: 8px 14px; border-radius: var(--radius-md); }
+  .btn-ghost:hover { color: var(--text-primary); }
+
+  #editor { display: block; width: 100%; min-height: 340px; padding: 1.1rem 1.2rem; border: 0; resize: vertical;
+            font-family: var(--font-mono); font-size: 13px; line-height: 1.65; color: var(--text-primary);
+            background: var(--bg-primary); tab-size: 4; }
+  #editor:focus { outline: none; }
+
+  .output-pane { min-height: 130px; max-height: 420px; overflow: auto; padding: 1.1rem 1.2rem;
+                 font-family: var(--font-mono); font-size: 12.5px; line-height: 1.65; white-space: pre-wrap;
+                 word-break: break-word; background: #17171a; color: #ecebe6; }
+  .output-pane .stderr { color: #f09595; }
+  .output-pane .sys { color: #85b7eb; }
+  .output-pane .placeholder { color: #6b6a66; }
+  .output-pane img { max-width: 100%; border-radius: var(--radius-md); margin: 10px 0; display: block; }
+
+  .status-row { display: flex; align-items: center; gap: 9px; font-size: 12.5px; color: var(--text-secondary);
+                margin-bottom: 1.1rem; }
+  .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--text-tertiary); flex-shrink: 0; }
+  .status-dot.loading, .status-dot.busy { background: #ef9f27; animation: pulse 1s ease-in-out infinite; }
+  .status-dot.ready { background: var(--text-success); }
+  .status-dot.error { background: var(--text-danger); }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
+
+  .fallback { padding: 1.4rem; font-size: 13.5px; color: var(--text-secondary); }
+  .fallback a { color: var(--text-info); text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <a class="back-link" href="index.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      AI Learning Lab
+    </a>
+  </div>
+
+  <header class="page-head">
+    <span class="kicker" id="breadcrumb">Programming Languages</span>
+    <h1 id="pageTitle">Run Python</h1>
+    <div class="file-row">
+      <span class="file-path" id="filePath"></span>
+      <a class="gh-chip" id="githubChip" href="#" target="_blank" rel="noopener">
+        <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.65 7.65 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+        <span>View on GitHub</span>
+      </a>
+    </div>
+  </header>
+
+  <div id="app">
+    <div class="status-row"><span class="status-dot loading" id="statusDot"></span><span id="statusText">Loading file&hellip;</span></div>
+    <div class="panel">
+      <div class="panel-head">
+        <span class="label">Editor</span>
+        <div class="btn-row">
+          <button class="btn-ghost" id="resetBtn">Reset</button>
+          <button class="btn-run" id="runBtn" disabled>
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+            Run
+          </button>
+        </div>
+      </div>
+      <textarea id="editor" spellcheck="false"></textarea>
+    </div>
+    <div class="panel">
+      <div class="panel-head"><span class="label">Output</span></div>
+      <div class="output-pane" id="output"><span class="placeholder">Output will appear here once you click Run.</span></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Packages Pyodide ships pre-built support for. Anything else (torch, tensorflow,
+  // cv2/opencv, redis, psycopg2, boto3, fastapi servers, etc.) is intentionally never
+  // auto-loaded here — those files should not link to this page at all.
+  const IMPORT_TO_PACKAGE = {
+    numpy: 'numpy', pandas: 'pandas', scipy: 'scipy', sklearn: 'scikit-learn',
+    matplotlib: 'matplotlib', seaborn: 'seaborn', sympy: 'sympy', networkx: 'networkx', plotly: 'plotly'
+  };
+
+  function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+  function humanizeFilename(path){
+    const base = path.split('/').pop().replace(/\.[^.]+$/, '');
+    return base.replace(/[_-]+/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+  }
+  function humanizeBreadcrumb(path){
+    const parts = path.split('/').slice(0, -1);
+    return parts.map(p => p.replace(/[_-]+/g, ' ')).join(' \u00b7 ');
+  }
+  function detectPackages(code){
+    const found = new Set();
+    const re = /^\s*(?:import|from)\s+([a-zA-Z0-9_]+)/gm;
+    let m;
+    while ((m = re.exec(code)) !== null){
+      if (IMPORT_TO_PACKAGE[m[1]]) found.add(IMPORT_TO_PACKAGE[m[1]]);
+    }
+    return Array.from(found);
+  }
+
+  const params = new URLSearchParams(window.location.search);
+  const filePath = params.get('file');
+
+  const editor = document.getElementById('editor');
+  const runBtn = document.getElementById('runBtn');
+  const resetBtn = document.getElementById('resetBtn');
+  const output = document.getElementById('output');
+  const statusDot = document.getElementById('statusDot');
+  const statusText = document.getElementById('statusText');
+
+  function setStatus(kind, text){
+    statusDot.className = 'status-dot ' + kind;
+    statusText.textContent = text;
+  }
+  function clearOutput(){ output.innerHTML = ''; }
+  function writeOut(text, cls){
+    const span = document.createElement('span');
+    if (cls) span.className = cls;
+    span.textContent = text;
+    output.appendChild(span);
+    output.scrollTop = output.scrollHeight;
+  }
+  function writeImage(base64){
+    const img = document.createElement('img');
+    img.src = 'data:image/png;base64,' + base64;
+    img.alt = 'Figure output';
+    output.appendChild(img);
+    output.scrollTop = output.scrollHeight;
+  }
+
+  let ORIGINAL_CODE = '';
+  let pyodidePromise = null;
+
+  async function initPyodide(){
+    const pyodide = await loadPyodide();
+    pyodide.setStdout({ batched: (msg) => writeOut(msg + '\n') });
+    pyodide.setStderr({ batched: (msg) => writeOut(msg + '\n', 'stderr') });
+    return pyodide;
+  }
+
+  async function main(){
+    if (!filePath){
+      document.getElementById('app').innerHTML = '<div class="panel"><div class="fallback">No file was specified. Open this page with <code>?file=path/to/script.py</code>.</div></div>';
+      return;
+    }
+
+    document.getElementById('pageTitle').textContent = humanizeFilename(filePath);
+    document.getElementById('filePath').textContent = filePath;
+    document.getElementById('breadcrumb').textContent = humanizeBreadcrumb(filePath) || 'AI Learning Lab';
+    document.getElementById('githubChip').href = 'https://github.com/ancilcleetus/AI-Learning-Lab/blob/main/' + filePath.split('/').map(encodeURIComponent).join('/');
+
+    try {
+      const res = await fetch(filePath, { cache: 'no-store' });
+      if (!res.ok) throw new Error('File not found (' + res.status + ')');
+      ORIGINAL_CODE = await res.text();
+      editor.value = ORIGINAL_CODE;
+    } catch (err) {
+      setStatus('error', 'Could not load the file');
+      writeOut('Failed to fetch ' + filePath + ': ' + err.message + '\n', 'stderr');
+      return;
+    }
+
+    setStatus('loading', 'Loading Python runtime\u2026');
+    pyodidePromise = initPyodide().then(async (pyodide) => {
+      const pkgs = detectPackages(ORIGINAL_CODE);
+      if (pkgs.length){
+        setStatus('loading', 'Loading ' + pkgs.join(', ') + '\u2026');
+        try { await pyodide.loadPackage(pkgs); } catch (e) { /* surfaced again at run time if it matters */ }
+      }
+      setStatus('ready', 'Ready');
+      runBtn.disabled = false;
+      return pyodide;
+    }).catch((err) => {
+      setStatus('error', 'Could not load the Python runtime');
+      writeOut('Failed to load Pyodide: ' + err.message + '\n', 'stderr');
+    });
+  }
+
+  async function collectMatplotlibFigures(pyodide){
+    try {
+      const hasMpl = pyodide.runPython('import sys\n"matplotlib.pyplot" in sys.modules');
+      if (!hasMpl) return [];
+      const result = pyodide.runPython(`
+import base64, io
+_figs_b64 = []
+import matplotlib.pyplot as plt
+for _n in plt.get_fignums():
+    _fig = plt.figure(_n)
+    _buf = io.BytesIO()
+    _fig.savefig(_buf, format='png', bbox_inches='tight')
+    _figs_b64.append(base64.b64encode(_buf.getvalue()).decode('ascii'))
+plt.close('all')
+_figs_b64
+      `);
+      const arr = result && result.toJs ? result.toJs() : (result || []);
+      if (result && result.destroy) result.destroy();
+      return arr;
+    } catch (e) {
+      return [];
+    }
+  }
+
+  runBtn.addEventListener('click', async () => {
+    if (!pyodidePromise) return;
+    runBtn.disabled = true;
+    setStatus('busy', 'Running\u2026');
+    clearOutput();
+    try {
+      const pyodide = await pyodidePromise;
+      if (!pyodide) return;
+      // pick up any packages the person added while editing
+      const pkgs = detectPackages(editor.value);
+      if (pkgs.length){
+        try { await pyodide.loadPackage(pkgs); } catch (e) {}
+      }
+      if (pkgs.includes('matplotlib')){
+        try { pyodide.runPython('import matplotlib; matplotlib.use("AGG")'); } catch (e) {}
+      }
+      await pyodide.runPythonAsync(editor.value);
+      const figs = await collectMatplotlibFigures(pyodide);
+      figs.forEach(writeImage);
+      setStatus('ready', 'Ready');
+    } catch (err) {
+      const msg = String(err);
+      if (/ModuleNotFoundError|No module named/.test(msg)) {
+        writeOut('This file needs a package that is not available in the browser Python runtime.\n', 'stderr');
+        writeOut(msg + '\n', 'stderr');
+      } else {
+        writeOut(msg + '\n', 'stderr');
+      }
+      setStatus('ready', 'Ready (finished with an error)');
+    } finally {
+      runBtn.disabled = false;
+      if (!output.textContent.trim() && !output.querySelector('img')) {
+        writeOut('(no output)\n', 'sys');
+      }
+    }
+  });
+
+  resetBtn.addEventListener('click', () => {
+    editor.value = ORIGINAL_CODE;
+    clearOutput();
+    writeOut('Reset to the original file.\n', 'sys');
+  });
+
+  main();
+</script>
+</body>
+</html>
