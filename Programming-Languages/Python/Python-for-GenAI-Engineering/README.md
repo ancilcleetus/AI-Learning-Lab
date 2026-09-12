@@ -22,12 +22,12 @@ uv run python 01_variables_and_types.py
 
 ## Course Modules
 
-| # | File | What You'll Learn |
-|---|------|-------------------|
-| 01 | `01_variables_and_types.py` | Variables, types, f-strings, `print()` |
-| 02 | `02_data_structures.py` | Lists, dicts, nested structures |
-| 03 | `03_control_flow.py` | if/else, for loops, while loops, comprehensions |
-| 04 | `04_functions.py` | def, parameters, defaults, *args, **kwargs, lambda |
+| # | Module | Link | What You'll Learn |
+| - | ------ | ---- | ----------------- |
+| 01 | Variables and Types | ![100%](https://geps.dev/progress/100) [![Open in GitHub](https://img.shields.io/badge/GitHub-181717?logo=github&logoColor=white&style=flat)](01_variables_and_types.py) | Variables, types, f-strings, `print()` |
+| 02 | Data Structures | ![100%](https://geps.dev/progress/100) [![Open in GitHub](https://img.shields.io/badge/GitHub-181717?logo=github&logoColor=white&style=flat)](02_data_structures.py) | Lists, dicts, nested structures |
+| 03 | Control Flow | ![100%](https://geps.dev/progress/100) [![Open in GitHub](https://img.shields.io/badge/GitHub-181717?logo=github&logoColor=white&style=flat)](03_control_flow.py) | if/else, for loops, while loops, comprehensions |
+| 04 | Functions | ![100%](https://geps.dev/progress/100) [![Open in GitHub](https://img.shields.io/badge/GitHub-181717?logo=github&logoColor=white&style=flat)](Programming-Languages/Python/Python-for-GenAI-Engineering/04_functions.py) | def, parameters, defaults, *args, **kwargs, lambda |
 
 ## References
 
