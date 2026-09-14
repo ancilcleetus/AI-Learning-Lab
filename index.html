@@ -70,6 +70,18 @@
   :root[data-theme="dark"] { --bg-violet: #2c1a52; --text-violet: #bba3f2; --border-violet: #6d3bbf; }
   @media (prefers-color-scheme: dark) { :root:not([data-theme]) { --bg-violet: #2c1a52; --text-violet: #bba3f2; --border-violet: #6d3bbf; } }
 
+  :root { --bg-lime: #eef7dc; --text-lime: #5b7a12; --border-lime: #a3c95a; }
+  :root[data-theme="dark"] { --bg-lime: #2b3308; --text-lime: #a3c95a; --border-lime: #5b7a12; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme]) { --bg-lime: #2b3308; --text-lime: #a3c95a; --border-lime: #5b7a12; } }
+
+  :root { --bg-pink: #fbe7f1; --text-pink: #a02170; --border-pink: #e28cba; }
+  :root[data-theme="dark"] { --bg-pink: #4a1130; --text-pink: #e28cba; --border-pink: #a02170; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme]) { --bg-pink: #4a1130; --text-pink: #e28cba; --border-pink: #a02170; } }
+
+  :root { --bg-teal: #dff5f3; --text-teal: #0d7d74; --border-teal: #55c2b6; }
+  :root[data-theme="dark"] { --bg-teal: #04302c; --text-teal: #55c2b6; --border-teal: #0d7d74; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme]) { --bg-teal: #04302c; --text-teal: #55c2b6; --border-teal: #0d7d74; } }
+
   html { scroll-behavior: smooth; }
   body { font-family: var(--font); background: var(--bg-tertiary); color: var(--text-primary);
          line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
@@ -160,6 +172,9 @@
   .domain.accent-warning { --accent-text: var(--text-warning); --accent-bg: var(--bg-warning); --accent-bd: var(--border-warning); }
   .domain.accent-danger  { --accent-text: var(--text-danger);  --accent-bg: var(--bg-danger);  --accent-bd: var(--border-danger); }
   .domain.accent-violet  { --accent-text: var(--text-violet);  --accent-bg: var(--bg-violet);  --accent-bd: var(--border-violet); }
+  .domain.accent-lime    { --accent-text: var(--text-lime);    --accent-bg: var(--bg-lime);    --accent-bd: var(--border-lime); }
+  .domain.accent-pink    { --accent-text: var(--text-pink);    --accent-bg: var(--bg-pink);    --accent-bd: var(--border-pink); }
+  .domain.accent-teal    { --accent-text: var(--text-teal);    --accent-bg: var(--bg-teal);    --accent-bd: var(--border-teal); }
   .domain-head { width: 100%; text-align: left; background: transparent; border: 0; cursor: pointer;
                  padding: clamp(1.1rem, 2.4vw, 1.5rem) clamp(1.2rem, 2.6vw, 1.7rem); font-family: var(--font);
                  display: flex; flex-direction: column; gap: 14px; }
@@ -451,7 +466,7 @@
     certificate: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="6"/><path d="M8.21 13.89L7 23l5-3 5 3-1.21-9.12"/></svg>'
   };
   const CHEV = '<svg class="chev tree-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>';
-  const ACCENTS = ['info', 'success', 'warning', 'danger', 'violet'];
+  const ACCENTS = ['info', 'success', 'warning', 'danger', 'violet', 'lime', 'pink', 'teal'];
 
   function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
@@ -643,7 +658,7 @@
     el.innerHTML =
       '<div class="stat"><span class="num" data-target="' + stats.avgPct + '" data-suffix="%">0</span><span class="lbl">overall progress</span></div>'
     + '<div class="stat"><span class="num" data-target="' + stats.trackCount + '">0</span><span class="lbl">learning tracks</span></div>'
-    + '<div class="stat"><span class="num" data-target="' + stats.leafDone + '">0</span><span class="lbl">of ' + stats.leafTotal + ' notebooks complete</span></div>'
+    + '<div class="stat"><span class="num" data-target="' + stats.leafDone + '">0</span><span class="lbl">of ' + stats.leafTotal + ' builds complete</span></div>'
     + '<div class="stat"><span class="num cert-num" id="certStatNum">&ndash;</span><span class="lbl">certificates earned</span></div>';
   }
 
