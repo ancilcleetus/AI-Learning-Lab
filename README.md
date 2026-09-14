@@ -65,3 +65,5 @@
         * [TensorTonic](https://www.tensortonic.com/)
         * [PracHub — Product Data Science Course](https://prachub.com/learning/product-data-science)
         * [StrataScratch](https://www.stratascratch.com/)
+* [Generative AI](Generative-AI) ![10%](https://geps.dev/progress/10)
+* [Production AI](Production-AI) ![10%](https://geps.dev/progress/10)
