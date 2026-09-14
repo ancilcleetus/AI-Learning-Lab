@@ -28,6 +28,7 @@ uv run python 01_variables_and_types.py
 | 02 | Data Structures | ![100%](https://geps.dev/progress/100) [![Open in GitHub](https://img.shields.io/badge/GitHub-181717?logo=github&logoColor=white&style=flat)](02_data_structures.py) | Lists, dicts, nested structures |
 | 03 | Control Flow | ![100%](https://geps.dev/progress/100) [![Open in GitHub](https://img.shields.io/badge/GitHub-181717?logo=github&logoColor=white&style=flat)](03_control_flow.py) | if/else, for loops, while loops, comprehensions |
 | 04 | Functions | ![100%](https://geps.dev/progress/100) [![Open in GitHub](https://img.shields.io/badge/GitHub-181717?logo=github&logoColor=white&style=flat)](04_functions.py) | def, parameters, defaults, *args, **kwargs, lambda |
+| 05 | File I/O & Context Managers | ![100%](https://geps.dev/progress/100) [![Open in GitHub](https://img.shields.io/badge/GitHub-181717?logo=github&logoColor=white&style=flat)](05_file_io.py) | open(), read/write, context managers (with), pathlib |
 
 ## References
 
