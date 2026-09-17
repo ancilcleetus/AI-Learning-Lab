@@ -147,6 +147,10 @@
   .btn-primary:hover { transform: translateY(-2px); opacity: 0.94; }
   .btn-ghost { color: var(--text-primary); background: var(--bg-primary); border: 0.5px solid var(--border-secondary); }
   .btn-ghost:hover { transform: translateY(-2px); border-color: var(--text-secondary); }
+  .btn-ghost.tint-teal { color: var(--text-teal); background: var(--bg-teal); border-color: var(--border-teal); }
+  .btn-ghost.tint-teal:hover { border-color: var(--text-teal); }
+  .btn-ghost.tint-violet { color: var(--text-violet); background: var(--bg-violet); border-color: var(--border-violet); }
+  .btn-ghost.tint-violet:hover { border-color: var(--text-violet); }
 
   .stats { display: flex; flex-wrap: wrap; gap: clamp(1.6rem, 5vw, 3rem); margin-top: 2.6rem; }
   .stat .num { font-family: var(--font-display); font-size: clamp(26px, 4vw, 36px); font-weight: 600;
@@ -397,8 +401,9 @@
       <h1><span class="h1-lead">AI Learning Lab:</span><span class="grad">A Structured, Hands-On Journey Through AI/ML</span></h1>
       <p class="lede">A running record of learning AI by building it — notebooks, scripts, and end-to-end projects, one build at a time.</p>
       <div class="hero-cta">
-        <a class="btn-primary" href="#tracks">Explore the tracks</a>
-        <a class="btn-ghost" href="#projects">Explore the projects</a>
+        <a class="btn-primary" href="#tracks">Explore tracks</a>
+        <a class="btn-ghost tint-teal" href="#projects">Explore projects</a>
+        <a class="btn-ghost tint-violet" href="#certificates">Explore certifications</a>
       </div>
       <div class="stats" id="stats"></div>
     </div>
