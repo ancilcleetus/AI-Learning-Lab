@@ -147,10 +147,9 @@
   .btn-primary:hover { transform: translateY(-2px); opacity: 0.94; }
   .btn-ghost { color: var(--text-primary); background: var(--bg-primary); border: 0.5px solid var(--border-secondary); }
   .btn-ghost:hover { transform: translateY(-2px); border-color: var(--text-secondary); }
-  .btn-ghost.tint-teal { color: var(--text-teal); background: var(--bg-teal); border-color: var(--border-teal); }
-  .btn-ghost.tint-teal:hover { border-color: var(--text-teal); }
-  .btn-ghost.tint-violet { color: var(--text-violet); background: var(--bg-violet); border-color: var(--border-violet); }
-  .btn-ghost.tint-violet:hover { border-color: var(--text-violet); }
+  .btn-primary svg, .btn-ghost svg { width: 15px; height: 15px; flex-shrink: 0; }
+  .btn-ghost svg.icon-teal { color: var(--text-teal); }
+  .btn-ghost svg.icon-violet { color: var(--text-violet); }
 
   .stats { display: flex; flex-wrap: wrap; gap: clamp(1.6rem, 5vw, 3rem); margin-top: 2.6rem; }
   .stat .num { font-family: var(--font-display); font-size: clamp(26px, 4vw, 36px); font-weight: 600;
@@ -401,9 +400,18 @@
       <h1><span class="h1-lead">AI Learning Lab:</span><span class="grad">A Structured, Hands-On Journey Through AI/ML</span></h1>
       <p class="lede">A running record of learning AI by building it — notebooks, scripts, and end-to-end projects, one build at a time.</p>
       <div class="hero-cta">
-        <a class="btn-primary" href="#tracks">Explore tracks</a>
-        <a class="btn-ghost tint-teal" href="#projects">Explore projects</a>
-        <a class="btn-ghost tint-violet" href="#certificates">Explore certifications</a>
+        <a class="btn-primary" href="#tracks">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+          Explore learning tracks
+        </a>
+        <a class="btn-ghost" href="#projects">
+          <svg class="icon-teal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+          Explore projects
+        </a>
+        <a class="btn-ghost" href="#certificates">
+          <svg class="icon-violet" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="6"/><path d="M8.21 13.89L7 23l5-3 5 3-1.21-9.12"/></svg>
+          Explore certifications
+        </a>
       </div>
       <div class="stats" id="stats"></div>
     </div>
@@ -421,7 +429,7 @@
         <div class="value v-info reveal">
           <span class="pill">What this is</span>
           <p class="stmt">A structured curriculum for AI Engineering, from foundations to frontier.</p>
-          <p class="sub">Seven tracks — Maths, Programming Languages, Tools, Machine Learning, Deep Learning, Generative AI, and Production AI — each broken into sub-topics so progress is always visible.</p>
+          <p class="sub">Seven learning tracks — Maths, Programming Languages, Tools, Machine Learning, Deep Learning, Generative AI, and Production AI — each broken into sub-topics so progress is always visible.</p>
         </div>
         <div class="value v-success reveal">
           <span class="pill">The method</span>
@@ -431,7 +439,7 @@
         <div class="value v-violet reveal">
           <span class="pill">Where it's headed</span>
           <p class="stmt">From focused builds to full end-to-end projects.</p>
-          <p class="sub">As tracks mature, real projects follow — each with its own GitHub repo and live demo, featured here alongside the learning that led to them.</p>
+          <p class="sub">As learning tracks mature, real projects follow — each with its own GitHub repo and live demo, featured here alongside the learning that led to them.</p>
         </div>
       </div>
     </div>
@@ -442,8 +450,8 @@
     <div class="wrap">
       <div class="section-head reveal">
         <span class="kicker">Explore</span>
-        <h2>Browse by track</h2>
-        <p>Open a track to drill into its sub-topics, courses, and individual builds.</p>
+        <h2>Browse by learning track</h2>
+        <p>Open a learning track to drill into its sub-topics, courses, and individual builds.</p>
       </div>
       <div id="track-list"><p class="status-note">Loading progress from README.md&hellip;</p></div>
     </div>
