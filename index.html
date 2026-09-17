@@ -288,6 +288,29 @@
   .cert-type.course { color: var(--text-success); background: var(--bg-success); border: 0.5px solid var(--border-success); }
   .cert-card-title { font-size: 13px; font-weight: 600; color: var(--text-primary); line-height: 1.35; }
 
+  /* ---------- projects ---------- */
+  .project-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 16px; }
+  .project-card { background: var(--bg-primary); border: 0.5px solid var(--border-tertiary); border-radius: var(--radius-xl);
+                   box-shadow: var(--shadow-sm); padding: 1.3rem 1.4rem; display: flex; flex-direction: column; gap: 12px;
+                   transition: transform 0.18s, box-shadow 0.18s, border-color 0.18s; }
+  .project-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); border-color: var(--border-secondary); }
+  .project-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+  .project-name { font-size: 15.5px; font-weight: 600; color: var(--text-primary); letter-spacing: -0.01em; line-height: 1.3; }
+  .project-status { display: inline-flex; align-items: center; gap: 5px; font-size: 10px; font-weight: 700;
+                     letter-spacing: 0.05em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px;
+                     white-space: nowrap; flex-shrink: 0; }
+  .project-status .dot { width: 6px; height: 6px; border-radius: 50%; }
+  .project-status.completed { color: var(--text-success); background: var(--bg-success); border: 0.5px solid var(--border-success); }
+  .project-status.completed .dot { background: var(--text-success); }
+  .project-status.in-progress { color: var(--text-warning); background: var(--bg-warning); border: 0.5px solid var(--border-warning); }
+  .project-status.in-progress .dot { background: var(--text-warning); animation: pulse 1.4s ease-in-out infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
+  .project-pitch { font-size: 13.5px; color: var(--text-secondary); line-height: 1.55; flex: 1; }
+  .project-stack { display: flex; flex-wrap: wrap; gap: 6px; }
+  .project-tag { font-size: 11px; font-weight: 600; color: var(--text-secondary); background: var(--bg-secondary);
+                 border: 0.5px solid var(--border-tertiary); border-radius: 999px; padding: 4px 10px; }
+  .project-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 2px; }
+
   .lightbox { position: fixed; inset: 0; z-index: 300; display: none; align-items: center; justify-content: center;
               padding: 2rem; background: rgba(10,10,8,0.82); backdrop-filter: blur(3px); }
   .lightbox.open { display: flex; }
@@ -420,6 +443,18 @@
     </div>
   </section>
 
+  <!-- PROJECTS -->
+  <section class="block" id="projects">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="kicker">Building</span>
+        <h2>Projects</h2>
+        <p>End-to-end projects — each in its own repo, with a live demo once deployed.</p>
+      </div>
+      <div id="project-list"><p class="status-note">Loading projects&hellip;</p></div>
+    </div>
+  </section>
+
   <!-- CERTIFICATES -->
   <section class="block" id="certificates">
     <div class="wrap">
@@ -463,7 +498,8 @@
     nbviewer: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 4h7a2 2 0 0 1 2 2v14a2 2 0 0 0-2-2H2z"/><path d="M22 4h-7a2 2 0 0 0-2 2v14a2 2 0 0 1 2-2h7z"/></svg>',
     colab: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>',
     run: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>',
-    certificate: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="6"/><path d="M8.21 13.89L7 23l5-3 5 3-1.21-9.12"/></svg>'
+    certificate: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="6"/><path d="M8.21 13.89L7 23l5-3 5 3-1.21-9.12"/></svg>',
+    demo: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>'
   };
   const CHEV = '<svg class="chev tree-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>';
   const ACCENTS = ['info', 'success', 'warning', 'danger', 'violet', 'lime', 'pink', 'teal'];
@@ -662,8 +698,8 @@
     + '<div class="stat"><span class="num cert-num" id="certStatNum">&ndash;</span><span class="lbl">certificates earned</span></div>';
   }
 
-  function animateCertStat(count){
-    const el = document.getElementById('certStatNum');
+  function animateStatNumber(elId, count){
+    const el = document.getElementById(elId);
     if (!el) return;
     if (reduceMotion){ el.textContent = count; return; }
     const dur = 1100, start = performance.now();
@@ -674,6 +710,62 @@
       if (p < 1) requestAnimationFrame(tick);
     };
     requestAnimationFrame(tick);
+  }
+  function animateCertStat(count){ animateStatNumber('certStatNum', count); }
+
+  // Appends "X end-to-end projects completed" / "X end-to-end projects in progress" —
+  // each only shown when its count is non-zero.
+  function appendProjectStats(projects){
+    const completed = projects.filter(function(p){ return p.status === 'completed'; }).length;
+    const inProgress = projects.filter(function(p){ return p.status === 'in-progress'; }).length;
+    let html = '';
+    if (completed > 0){
+      html += '<div class="stat"><span class="num" id="projCompletedNum">0</span><span class="lbl">end-to-end projects completed</span></div>';
+    }
+    if (inProgress > 0){
+      html += '<div class="stat"><span class="num" id="projInProgressNum">0</span><span class="lbl">end-to-end projects in progress</span></div>';
+    }
+    if (!html) return;
+    document.getElementById('stats').insertAdjacentHTML('beforeend', html);
+    if (completed > 0) animateStatNumber('projCompletedNum', completed);
+    if (inProgress > 0) animateStatNumber('projInProgressNum', inProgress);
+  }
+
+  // ---------- projects ----------
+  async function fetchProjects(){
+    try {
+      const res = await fetch('projects.json', { cache: 'no-store' });
+      if (!res.ok) return [];
+      const data = await res.json();
+      return Array.isArray(data) ? data : [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function renderProjectCard(p){
+    const isCompleted = p.status === 'completed';
+    const statusClass = isCompleted ? 'completed' : 'in-progress';
+    const statusLabel = isCompleted ? 'Completed' : 'In Progress';
+    const tags = (p.stack || []).map(function(s){ return '<span class="project-tag">' + esc(s) + '</span>'; }).join('');
+    const links = '<a class="chip" href="' + esc(p.github) + '" target="_blank" rel="noopener">' + ICONS.github + '<span>GitHub</span></a>'
+      + (p.demo ? '<a class="chip" href="' + esc(p.demo) + '" target="_blank" rel="noopener">' + ICONS.demo + '<span>Live Demo</span></a>' : '');
+    return '<div class="project-card reveal">'
+         + '<div class="project-head"><span class="project-name">' + esc(p.name) + '</span>'
+         +   '<span class="project-status ' + statusClass + '"><span class="dot"></span>' + statusLabel + '</span></div>'
+         + '<p class="project-pitch">' + esc(p.pitch) + '</p>'
+         + (tags ? '<div class="project-stack">' + tags + '</div>' : '')
+         + '<div class="project-links">' + links + '</div>'
+         + '</div>';
+  }
+
+  function renderProjects(projects){
+    const el = document.getElementById('project-list');
+    if (!projects.length){
+      el.innerHTML = '<p class="status-note">No projects yet — the first end-to-end project will appear here once it\'s added.</p>';
+      return;
+    }
+    el.innerHTML = '<div class="project-grid">' + projects.map(renderProjectCard).join('') + '</div>';
   }
 
   // ---------- certificates ----------
@@ -985,20 +1077,35 @@
     setupCounters();
     setupLightbox();
 
-    if (tracks.length){
-      try {
-        const certs = await discoverCertificates(tracks);
-        renderCertGallery(certs, tracks);
-        animateCertStat(certs.length);
-        applyInlineCertificateIndicators(certs);
-      } catch (e) {
-        certEl.innerHTML = '<p class="status-note">Could not check for certificates right now.</p>';
+    const certPromise = (async () => {
+      if (tracks.length){
+        try {
+          const certs = await discoverCertificates(tracks);
+          renderCertGallery(certs, tracks);
+          animateCertStat(certs.length);
+          applyInlineCertificateIndicators(certs);
+        } catch (e) {
+          certEl.innerHTML = '<p class="status-note">Could not check for certificates right now.</p>';
+          animateCertStat(0);
+        }
+      } else {
+        certEl.innerHTML = '<p class="status-note">Certificates will appear here once track data loads.</p>';
         animateCertStat(0);
       }
-    } else {
-      certEl.innerHTML = '<p class="status-note">Certificates will appear here once track data loads.</p>';
-      animateCertStat(0);
-    }
+    })();
+
+    const projectEl = document.getElementById('project-list');
+    const projectPromise = (async () => {
+      try {
+        const projects = await fetchProjects();
+        renderProjects(projects);
+        appendProjectStats(projects);
+      } catch (e) {
+        projectEl.innerHTML = '<p class="status-note">Could not load projects right now.</p>';
+      }
+    })();
+
+    await Promise.all([certPromise, projectPromise]);
     setupReveal();
     setupProgress();
   }
