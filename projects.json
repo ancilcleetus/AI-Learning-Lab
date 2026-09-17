@@ -1,0 +1,10 @@
+[
+  {
+    "name": "Customer Churn Prediction",
+    "pitch": "Predicting customer churn through the full ML lifecycle — from raw data to a live, monitored model in production.",
+    "status": "in-progress",
+    "stack": ["Python", "NumPy", "Pandas", "Scikit Learn"],
+    "github": "https://github.com/ancilcleetus/Customer-Churn-Prediction",
+    "demo": null
+  }
+]
