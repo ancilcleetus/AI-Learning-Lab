@@ -66,4 +66,6 @@
         * [PracHub — Product Data Science Course](https://prachub.com/learning/product-data-science)
         * [StrataScratch](https://www.stratascratch.com/)
 * [Generative AI](Generative-AI) ![10%](https://geps.dev/progress/10)
+    * [LLMs](Generative-AI/LLMs) ![10%](https://geps.dev/progress/10) Generative-AI/LLMs/01_What_are_LLMs.ipynb
+    	* Module 01: What are LLMs? ![10%](https://geps.dev/progress/10) [![Open in GitHub](https://img.shields.io/badge/GitHub-181717?logo=github&logoColor=white&style=flat)](Generative-AI/LLMs/01_What_are_LLMs.ipynb) [![Open in nbviewer](https://img.shields.io/badge/Jupyter%20nbviewer-F37626?logo=jupyter&logoColor=white&style=flat)](https://nbviewer.org/github/ancilcleetus/AI-Learning-Lab/blob/main/Generative-AI/LLMs/01_What_are_LLMs.ipynb) [![Open in Colab](https://img.shields.io/badge/Google%20Colab-F9AB00?logo=googlecolab&logoColor=white&style=flat)](https://colab.research.google.com/github/ancilcleetus/AI-Learning-Lab/blob/main/Generative-AI/LLMs/01_What_are_LLMs.ipynb)
 * [Production AI](Production-AI) ![10%](https://geps.dev/progress/10)
