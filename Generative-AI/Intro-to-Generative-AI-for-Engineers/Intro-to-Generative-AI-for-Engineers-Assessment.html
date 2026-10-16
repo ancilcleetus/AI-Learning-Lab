@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Intro to Generative AI for Engineers: Assessment</title>
+<style>
+  :root { --bg:#f4f6f8; --card:#fff; --text:#1c2430; --muted:#5b6675; --line:#d5dbe3; --blue:#3278aa; --ok:#1e7a46; --bad:#b3261e; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#151a21; --card:#1f2630; --text:#e8edf3; --muted:#9aa6b5; --line:#334050; --blue:#4a90c4; --ok:#5ccb8a; --bad:#ff8a80; }
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font:16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 780px; margin: 0 auto; padding: 24px 16px 48px; }
+  h1 { font-size: 1.4rem; margin: 0 0 4px; }
+  .sub { color: var(--muted); margin: 0 0 24px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:8px; padding:20px; margin-bottom:20px; }
+  .num { color:var(--muted); font-size:.9rem; margin-bottom:4px; }
+  .q { font-weight:700; font-size:1.05rem; margin:0 0 12px; }
+  label { display:flex; gap:10px; align-items:flex-start; padding:8px 6px; border-radius:6px; cursor:pointer; }
+  label:hover { background: rgba(50,120,170,.08); }
+  input[type=radio] { margin-top:5px; accent-color: var(--blue); }
+  .row { display:flex; align-items:center; gap:14px; margin-top:12px; flex-wrap:wrap; }
+  button { background:var(--blue); color:#fff; border:0; border-radius:5px; padding:9px 26px; font-size:1rem; cursor:pointer; }
+  button:focus-visible, input:focus-visible { outline:3px solid var(--blue); outline-offset:2px; }
+  .out { font-weight:600; }
+  .out.ok { color:var(--ok); }
+  .out.bad { color:var(--bad); }
+  .out.warn { color:var(--muted); }
+  .note { color:var(--muted); font-weight:400; }
+  #score { border-width:2px; }
+  #score[hidden] { display:none; }
+  #score .pct { font-size:2.2rem; font-weight:700; line-height:1.1; }
+  #score .verdict { font-size:1.15rem; font-weight:700; margin:6px 0 2px; }
+  #score.pass { border-color:var(--ok); }
+  #score.pass .verdict { color:var(--ok); }
+  #score.fail { border-color:var(--bad); }
+  #score.fail .verdict { color:var(--bad); }
+  #score p { margin:4px 0; }
+  .actions { display:flex; gap:12px; flex-wrap:wrap; }
+  button.secondary { background:transparent; color:var(--blue); border:1px solid var(--blue); }
+</style>
+</head>
+<body>
+<main>
+  <h1>Intro to Generative AI for Engineers: Assessment</h1>
+  <p class="sub">Pick one answer per question and press Submit. You can retry as often as you like, but your score uses your first attempt on each question. Passing requires 80% or higher.</p>
+  <section id="score" class="card" tabindex="-1" aria-live="polite" hidden></section>
+  <div id="quiz"></div>
+  <div class="actions">
+    <button type="button" id="seeScore">See my score</button>
+    <button type="button" id="startOver" class="secondary">Start over</button>
+  </div>
+</main>
+
+<script>
+/* ---- Questions: answers are stored only as salted SHA-256 hashes ---- */
+var QUESTIONS = [
+{"id":"q1","q":"Your team is considering replacing a handwritten rules engine for flagging malformed JSON payloads with an LLM. The existing engine is 100% accurate and fully testable. What is the right call?","o":["Replace it — LLMs handle edge cases better","Replace it — LLMs are always more maintainable than rules engines","Keep the rules engine — if you can fully specify the rules and need exact, testable results, deterministic code is the right tool","Replace it — a probabilistic model reduces maintenance overhead"],"h":"130cb4936a460b17aef094b507b497ab3f9ca58bb4d8de2cc0c41283f5a6a7a5"},
+{"id":"q2","q":"A team builds a code assistant and sets temperature to 0.9 for all requests. What is the likely effect on code-generation quality?","o":["Outputs become more deterministic and easier to test","The model uses a larger context window","Completions become more varied and creative, increasing the rate of syntax errors and hallucinated APIs","Latency drops because the model stops earlier"],"h":"a5677ce76495bf15d0cf76a9413254e15912b955a26701ef0e69890816b97e5e"},
+{"id":"q3","q":"A developer notices that pasting a large minified JavaScript file (roughly 8,000 characters) causes the response to be cut off. The most likely cause is that the input exceeded which limit?","o":["The model's maximum output character limit","The HTTP request body size limit of the API gateway","The model's context window measured in tokens — dense code tokenizes to many tokens quickly","The temperature cap of the model"],"h":"1930043e8985b6c019bd26479ab8b73caff0a613e79437e328c415bd19f3a50c"},
+{"id":"q4","q":"Your team uses a small internal framework called orchard-rpc. The LLM keeps writing plausible but wrong code against it. What is the most likely cause and best mitigation?","o":["The model temperature is too high; lower it","The framework is under-represented in pre-training; paste the relevant docs into the prompt or use RAG","Switch to a larger model and try again unchanged","Ask the model to be more careful"],"h":"efeba29d40b925356ac1dac1d4a38689bf5cc4255f5ae0bc65ac13bd1b9e0d03"},
+{"id":"q5","q":"Why does each additional output token cost more in a streaming API response, even if the prompt stays the same?","o":["The API charges a premium for streaming mode","Output tokens use a larger vocabulary than input tokens","Each output token requires a full forward pass through the model's layers, so more tokens means more computation","Longer responses trigger a content-safety review that adds cost"],"h":"3e42ced5eea926987543ca3f1c2d63d9bbe245a7b18bc75ddece3e4766a7c173"},
+{"id":"q6","q":"Which task is the strongest fit for AI on a typical engineering team today?","o":["Approving the production deploy of a payment service","Generating a unified diff to rename a deprecated import across 40 files","Deciding whether to migrate the company off its primary database","Sending the customer notification during an active outage"],"h":"4518538ee06bd95552d6debaf4971f3d17d756223cf213cca3c3d44fbaaee9c1"},
+{"id":"q7","q":"During an active production incident, the on-call engineer uses AI to draft the customer-facing status update. What is the correct next step before publishing?","o":["Publish immediately — speed matters more than review in an incident","Ask the AI to review its own draft for accuracy","Have a human review and approve the draft before it goes out — customer-facing incident communication is a human responsibility","Ask the AI to add more technical detail to improve trust"],"h":"2b645fc1524f1a92237306cc0f76644a933dc8bc6ee4f7effc3559cb6be09428"},
+{"id":"q8","q":"Which clause is the most reliable single fix for “the model confidently used an API that does not exist”?","o":["Raise temperature so it explores more options","Add the real API docs to context and a verification clause that says “mark unverified references explicitly”","Use a longer system prompt about being careful","Ask it twice and take the consistent answer"],"h":"247230bcb6623e84360762cd2e96143b312a8f5d50bc8c5fc7eb1e2bd9f2257a"},
+{"id":"q9","q":"A developer has been working on the same chat session for two hours across four unrelated tasks. Performance has degraded and answers feel stale. According to the RCTFV common mistakes list, what is the fix?","o":["Switch to a premium-tier model in the same session","Add a Verification clause to the last message","Start a fresh chat for each new task and re-supply the relevant context — long sessions drift and accumulated context hurts quality","Increase the context window by upgrading the plan"],"h":"f7ec4ffb89b23577841be049c61a2ad29fc34bcaaf7c852bf1688c493d6b2123"},
+{"id":"q10","q":"You are debugging a failing API call and the error message includes a live bearer token. You want to ask an LLM for help. What do you do?","o":["Paste it; the enterprise tool does not train on inputs","Redact the token to a placeholder and rotate it if there is any chance it leaked, then ask","Send a screenshot instead of text","Ask the model first whether it is safe to paste"],"h":"111131921877368113656125a55a4bed98b31d54795cfcf3a0db1808c43b0ff1"},
+{"id":"q11","q":"A colleague says \"we use the enterprise tier, so data safety rules don't apply.\" What is wrong with this reasoning?","o":["Nothing — enterprise tiers provide full data isolation so any data can be shared","Enterprise tiers are actually less secure than consumer tools","Enterprise tiers shift the caution tier but do not eliminate the never-share tier; live credentials, PII, and confidential data still must not be pasted","Enterprise tiers only apply to customer-facing products, not internal tooling"],"h":"3975ec0262427cec9a6040195cc9d832acb4b8291b7a633f7d742921a280fd51"},
+{"id":"q12","q":"A team stores a 4,000-token system prompt and 6,000 tokens of framework documentation in every API request. Prompt caching is available. Where should they place the variable part of the prompt to maximize cache hit rate?","o":["At the very beginning, before the system prompt","Interleaved throughout the prompt to help the model find context","At the end — put the static system prompt and docs first so the large prefix stays cache-eligible on every request","In a separate API call so caching applies to the full prompt"],"h":"8cf324204a003e7c3710a2c50dcb1ddee17ce80a4367659f504ce787b3c46e6f"},
+{"id":"q13","q":"A developer needs to generate doc-comments for hundreds of public functions in a nightly batch job. Which model tier is the right default?","o":["The small/fast tier (Haiku-class) — high-volume, well-specified, low-reasoning work","The premium tier (Opus-class), to be safe with documentation quality","Whichever model the editor copilot picks by default","The reasoning tier, because writing prose needs reasoning"],"h":"928c6949d93e13e17d6634cb084ae7df1a04c7de47d7b91f3cf3ee991d3c6b94"},
+{"id":"q14","q":"An engineer is using a \"bring your own API key\" IDE plugin (like Continue or Cline). Which statement best describes their cost exposure compared to a seat-based subscription like Copilot?","o":["Costs are identical — both are flat per-seat fees","API-key plugins are always cheaper because they skip the vendor margin","API-key plugins bill exact metered usage per token, so careless habits (pasting whole files, long contexts) directly appear on the bill with no bundled buffer","API-key plugins use a shared token pool across the team, reducing individual cost"],"h":"8e252e3078a26f5327859b0683a1d23f595b28fd1f0dff0d4802e4e71e634eff"}
+];
+
+/* ---- Pure-JS SHA-256 (works on file:// pages, no browser crypto needed) ---- */
+function sha256(ascii) {
+  function rr(v, a) { return (v >>> a) | (v << (32 - a)); }
+  var mp = Math.pow, mw = mp(2, 32), res = '', words = [], i, j;
+  var abl = ascii.length * 8;
+  var hash = sha256.h = sha256.h || [], k = sha256.k = sha256.k || [], pc = k.length, ic = {};
+  for (var c = 2; pc < 64; c++) {
+    if (!ic[c]) {
+      for (i = 0; i < 313; i += c) ic[i] = c;
+      hash[pc] = (mp(c, .5) * mw) | 0;
+      k[pc++] = (mp(c, 1 / 3) * mw) | 0;
+    }
+  }
+  ascii += '\x80';
+  while (ascii.length % 64 - 56) ascii += '\x00';
+  for (i = 0; i < ascii.length; i++) {
+    j = ascii.charCodeAt(i);
+    words[i >> 2] |= j << ((3 - i) % 4) * 8;
+  }
+  words[words.length] = ((abl / mw) | 0);
+  words[words.length] = (abl);
+  for (j = 0; j < words.length;) {
+    var w = words.slice(j, j += 16), oh = hash;
+    hash = hash.slice(0, 8);
+    for (i = 0; i < 64; i++) {
+      var w15 = w[i - 15], w2 = w[i - 2], a = hash[0], e = hash[4];
+      var t1 = hash[7] + (rr(e, 6) ^ rr(e, 11) ^ rr(e, 25)) + ((e & hash[5]) ^ ((~e) & hash[6])) + k[i] +
+        (w[i] = (i < 16) ? w[i] : (w[i - 16] + (rr(w15, 7) ^ rr(w15, 18) ^ (w15 >>> 3)) + w[i - 7] + (rr(w2, 17) ^ rr(w2, 19) ^ (w2 >>> 10))) | 0);
+      var t2 = (rr(a, 2) ^ rr(a, 13) ^ rr(a, 22)) + ((a & hash[1]) ^ (a & hash[2]) ^ (hash[1] & hash[2]));
+      hash = [(t1 + t2) | 0].concat(hash);
+      hash[4] = (hash[4] + t1) | 0;
+    }
+    for (i = 0; i < 8; i++) hash[i] = (hash[i] + oh[i]) | 0;
+  }
+  for (i = 0; i < 8; i++) for (j = 3; j + 1; j--) {
+    var b = (hash[i] >> (j * 8)) & 255;
+    res += ((b < 16) ? 0 : '') + b.toString(16);
+  }
+  return res;
+}
+function hashAnswer(qid, text) {
+  return sha256(unescape(encodeURIComponent(qid + "|" + text)));
+}
+
+/* ---- Render ---- */
+var PASS_PERCENT = 80;
+var root = document.getElementById("quiz");
+var firstAttempt = {};   // question id -> true (correct) / false (wrong), set on first Submit only
+var attempts = {};       // question id -> number of submits
+var outputs = [];
+QUESTIONS.forEach(function (item, n) {
+  var card = document.createElement("section");
+  card.className = "card";
+
+  var num = document.createElement("div");
+  num.className = "num";
+  num.textContent = "Question " + (n + 1) + " of " + QUESTIONS.length;
+  card.appendChild(num);
+
+  var q = document.createElement("p");
+  q.className = "q";
+  q.textContent = item.q;
+  card.appendChild(q);
+
+  var group = "g_" + item.id;
+  item.o.forEach(function (text) {
+    var label = document.createElement("label");
+    var input = document.createElement("input");
+    input.type = "radio";
+    input.name = group;
+    input.value = text;
+    var span = document.createElement("span");
+    span.textContent = text;
+    label.appendChild(input);
+    label.appendChild(span);
+    card.appendChild(label);
+  });
+
+  var row = document.createElement("div");
+  row.className = "row";
+  var btn = document.createElement("button");
+  btn.type = "button";
+  btn.textContent = "Submit";
+  var out = document.createElement("span");
+  out.className = "out";
+  out.setAttribute("aria-live", "polite");
+  row.appendChild(btn);
+  row.appendChild(out);
+  card.appendChild(row);
+
+  outputs.push(out);
+  btn.addEventListener("click", function () {
+    var sel = card.querySelector("input[name=" + group + "]:checked");
+    if (!sel) {
+      out.className = "out warn";
+      out.textContent = "Select an answer first.";
+      return;
+    }
+    var correct = hashAnswer(item.id, sel.value) === item.h;
+    attempts[item.id] = (attempts[item.id] || 0) + 1;
+    if (!(item.id in firstAttempt)) firstAttempt[item.id] = correct;
+    out.className = "out " + (correct ? "ok" : "bad");
+    out.textContent = correct ? "\u2705 Correct!" : "\u274c Not quite. Try again.";
+    if (attempts[item.id] > 1) {
+      var note = document.createElement("span");
+      note.className = "note";
+      note.textContent = " Your score uses your first attempt.";
+      out.appendChild(note);
+    }
+  });
+
+  root.appendChild(card);
+});
+
+/* ---- Score ---- */
+var scoreBox = document.getElementById("score");
+
+function showScore() {
+  var total = QUESTIONS.length, correct = 0, answered = 0;
+  QUESTIONS.forEach(function (item) {
+    if (item.id in firstAttempt) {
+      answered++;
+      if (firstAttempt[item.id]) correct++;
+    }
+  });
+  var unanswered = total - answered;
+  var pct = correct / total * 100;
+  var passed = correct * 100 >= PASS_PERCENT * total;   // exact integer check, no rounding
+  var minCorrect = Math.ceil(PASS_PERCENT * total / 100);
+
+  scoreBox.hidden = false;
+  scoreBox.className = "card " + (passed ? "pass" : "fail");
+  scoreBox.innerHTML = "";
+  function add(tag, cls, text) {
+    var el = document.createElement(tag);
+    if (cls) el.className = cls;
+    el.textContent = text;
+    scoreBox.appendChild(el);
+  }
+  add("div", "pct", pct.toFixed(1) + "%");
+  add("p", "", correct + " of " + total + " correct on first attempt");
+  add("div", "verdict", passed ? "Passed" : "Not yet passed");
+  add("p", "note", PASS_PERCENT + "% needed to pass (at least " + minCorrect + " of " + total + " correct).");
+  if (unanswered > 0) {
+    add("p", "note", unanswered + (unanswered === 1 ? " question" : " questions") + " unanswered (counted as wrong).");
+  }
+  scoreBox.scrollIntoView({ behavior: "smooth", block: "start" });
+  scoreBox.focus({ preventScroll: true });
+}
+
+function startOver() {
+  firstAttempt = {};
+  attempts = {};
+  Array.prototype.forEach.call(document.querySelectorAll("input[type=radio]"), function (r) { r.checked = false; });
+  outputs.forEach(function (o) { o.className = "out"; o.textContent = ""; });
+  scoreBox.hidden = true;
+  scoreBox.innerHTML = "";
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+document.getElementById("seeScore").addEventListener("click", showScore);
+document.getElementById("startOver").addEventListener("click", startOver);
+</script>
+</body>
+</html>
