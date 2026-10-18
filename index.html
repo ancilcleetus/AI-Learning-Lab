@@ -94,9 +94,17 @@
   :root[data-theme="dark"] { --bg-pink: #4a1130; --text-pink: #e28cba; --border-pink: #a02170; }
   @media (prefers-color-scheme: dark) { :root:not([data-theme]) { --bg-pink: #4a1130; --text-pink: #e28cba; --border-pink: #a02170; } }
 
-  :root { --bg-teal: #dff5f3; --text-teal: #0d7d74; --border-teal: #55c2b6; }
-  :root[data-theme="dark"] { --bg-teal: #04302c; --text-teal: #55c2b6; --border-teal: #0d7d74; }
-  @media (prefers-color-scheme: dark) { :root:not([data-theme]) { --bg-teal: #04302c; --text-teal: #55c2b6; --border-teal: #0d7d74; } }
+  :root { --bg-teal: #dcf2f1; --text-teal: #208a86; --border-teal: #8cdad5; }
+  :root[data-theme="dark"] { --bg-teal: #12312f; --text-teal: #8cdad5; --border-teal: #208a86; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme]) { --bg-teal: #12312f; --text-teal: #8cdad5; --border-teal: #208a86; } }
+
+  :root { --bg-clay: #fdeae2; --text-clay: #a66f54; --border-clay: #f6c0a7; }
+  :root[data-theme="dark"] { --bg-clay: #3b281f; --text-clay: #f6c0a7; --border-clay: #a66f54; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme]) { --bg-clay: #3b281f; --text-clay: #f6c0a7; --border-clay: #a66f54; } }
+
+  :root { --bg-slate: #dcf2f7; --text-slate: #3b545a; --border-slate: #899fa5; }
+  :root[data-theme="dark"] { --bg-slate: #103037; --text-slate: #899fa5; --border-slate: #3b545a; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme]) { --bg-slate: #103037; --text-slate: #899fa5; --border-slate: #3b545a; } }
 
   html { scroll-behavior: smooth; }
   body { font-family: var(--font); background: var(--bg-tertiary); color: var(--text-primary);
@@ -195,6 +203,8 @@
   .domain.accent-lime    { --accent-text: var(--text-lime);    --accent-bg: var(--bg-lime);    --accent-bd: var(--border-lime); }
   .domain.accent-pink    { --accent-text: var(--text-pink);    --accent-bg: var(--bg-pink);    --accent-bd: var(--border-pink); }
   .domain.accent-teal    { --accent-text: var(--text-teal);    --accent-bg: var(--bg-teal);    --accent-bd: var(--border-teal); }
+  .domain.accent-clay    { --accent-text: var(--text-clay);    --accent-bg: var(--bg-clay);    --accent-bd: var(--border-clay); }
+  .domain.accent-slate   { --accent-text: var(--text-slate);   --accent-bg: var(--bg-slate);   --accent-bd: var(--border-slate); }
   .domain-head { width: 100%; text-align: left; background: transparent; border: 0; cursor: pointer;
                  padding: clamp(1.1rem, 2.4vw, 1.5rem) clamp(1.2rem, 2.6vw, 1.7rem); font-family: var(--font);
                  display: flex; flex-direction: column; gap: 14px; }
@@ -446,7 +456,7 @@
         <div class="value v-info reveal">
           <span class="pill">What this is</span>
           <p class="stmt">A structured curriculum for AI Engineering, from foundations to frontier.</p>
-          <p class="sub">Seven learning tracks — Maths, Programming Languages, Tools, Machine Learning, Deep Learning, Generative AI, and Production AI — each broken into sub-topics so progress is always visible.</p>
+          <p class="sub">Ten learning tracks — Maths, Programming Languages, Tools, Machine Learning, Deep Learning, Computer Vision, Natural Language Processing (NLP), Generative AI, Physical AI, and Production AI — each broken into sub-topics so progress is always visible.</p>
         </div>
         <div class="value v-success reveal">
           <span class="pill">The method</span>
@@ -533,7 +543,10 @@
     demo: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>'
   };
   const CHEV = '<svg class="chev tree-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>';
-  const ACCENTS = ['info', 'success', 'warning', 'danger', 'violet', 'lime', 'pink', 'teal'];
+  // Colour order follows the README track order. Chosen so neighbouring cards are always clearly different:
+  // Maths, Programming Languages, Tools, Machine Learning, Deep Learning, Computer Vision,
+  // Natural Language Processing, Generative AI, Physical AI, Production AI
+  const ACCENTS = ['info', 'success', 'warning', 'danger', 'violet', 'teal', 'clay', 'lime', 'slate', 'pink'];
 
   function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
