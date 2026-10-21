@@ -4,6 +4,8 @@ Welcome to the **NLP Foundations** module of the AI Learning Lab. This learning 
 
 This module begins at the foundational vector representation of words, moves systematically through sequence models, and culminates in the structural design of the Transformer architecture and pre-LLM transfer learning models.
 
+## Word Embeddings ![20%](https://geps.dev/progress/20) [![Open in GitHub](https://img.shields.io/badge/GitHub-181717?logo=github&logoColor=white&style=flat)](Word_Embeddings.ipynb) [![Open in nbviewer](https://img.shields.io/badge/Jupyter%20nbviewer-F37626?logo=jupyter&logoColor=white&style=flat)](https://nbviewer.org/github/ancilcleetus/AI-Learning-Lab/blob/main/NLP/NLP-Foundations/Word_Embeddings.ipynb) [![Open in Colab](https://img.shields.io/badge/Google%20Colab-F9AB00?logo=googlecolab&logoColor=white&style=flat)](https://colab.research.google.com/github/ancilcleetus/AI-Learning-Lab/blob/main/NLP/NLP-Foundations/Word_Embeddings.ipynb)
+
 ## 🧭 Syllabus & Core Learning Resources
 
 ### Phase 1: Word Embeddings (Representing Words)
