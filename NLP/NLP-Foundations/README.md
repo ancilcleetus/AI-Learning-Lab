@@ -4,7 +4,9 @@ Welcome to the **NLP Foundations** module of the AI Learning Lab. This learning 
 
 This module begins at the foundational vector representation of words, moves systematically through sequence models, and culminates in the structural design of the Transformer architecture and pre-LLM transfer learning models.
 
-## Word Embeddings ![20%](https://geps.dev/progress/20) [![Open in GitHub](https://img.shields.io/badge/GitHub-181717?logo=github&logoColor=white&style=flat)](Word_Embeddings.ipynb) [![Open in nbviewer](https://img.shields.io/badge/Jupyter%20nbviewer-F37626?logo=jupyter&logoColor=white&style=flat)](https://nbviewer.org/github/ancilcleetus/AI-Learning-Lab/blob/main/NLP/NLP-Foundations/Word_Embeddings.ipynb) [![Open in Colab](https://img.shields.io/badge/Google%20Colab-F9AB00?logo=googlecolab&logoColor=white&style=flat)](https://colab.research.google.com/github/ancilcleetus/AI-Learning-Lab/blob/main/NLP/NLP-Foundations/Word_Embeddings.ipynb)
+## Phase 1: Word Embeddings (Representing Words)
+
+### Word Embeddings ![100%](https://geps.dev/progress/100) [![Open in GitHub](https://img.shields.io/badge/GitHub-181717?logo=github&logoColor=white&style=flat)](Word_Embeddings.ipynb) [![Open in nbviewer](https://img.shields.io/badge/Jupyter%20nbviewer-F37626?logo=jupyter&logoColor=white&style=flat)](https://nbviewer.org/github/ancilcleetus/AI-Learning-Lab/blob/main/NLP/NLP-Foundations/Word_Embeddings.ipynb) [![Open in Colab](https://img.shields.io/badge/Google%20Colab-F9AB00?logo=googlecolab&logoColor=white&style=flat)](https://colab.research.google.com/github/ancilcleetus/AI-Learning-Lab/blob/main/NLP/NLP-Foundations/Word_Embeddings.ipynb)
 
 ## 🧭 Syllabus & Core Learning Resources
 
@@ -62,25 +64,3 @@ Understanding how the industry shifted from static lookups to dynamic, context-a
     *   *Lena Voita (Core Structure):* [Transfer Learning (Fine-tuning, BERT, Contextual Embeddings)](http://github.io)
     *   *Jay Alammar:* [The Illustrated BERT, ELMo, and co. (How NLP Cracked Transfer Learning)](https://jalammar.github.io/illustrated-bert/)
 
-## 🛠️ Interactive Implementation Lab
-
-*This section will host custom Jupyter notebook implementations mapping directly to the phases detailed above.*
-
-| Phase | Lab Notebook | Primary Concept Covered | Status |
-| :--- | :--- | :--- | :--- |
-| **Phase 1** | *[Link coming soon]* | Word2Vec / Skip-Gram from Scratch | ⏳ Planned |
-| **Phase 4** | *[Link coming soon]* | Text Generation with LSTMs | ⏳ Planned |
-| **Phase 6** | *[Link coming soon]* | Multi-Head Attention Mechanism | ⏳ Planned |
-
-
-# **Fundamental Coding Interview Prep with Python**
-
-Immerse yourself in the comprehensive world of Python programming to navigate the challenges of technical assessments at renowned tech companies. This path focuses on Python, aiming to prepare you with a solid knowledge of Python syntax, algorithms, data structures, and problem-solving strategies.
-
-## Course 1: Revisiting Python Essentials ![100%](https://geps.dev/progress/100) [![Open in GitHub](https://img.shields.io/badge/GitHub-181717?logo=github&logoColor=white&style=flat)](01_Revisiting_Python_Essentials.ipynb) [![Open in nbviewer](https://img.shields.io/badge/Jupyter%20nbviewer-F37626?logo=jupyter&logoColor=white&style=flat)](https://nbviewer.org/github/ancilcleetus/AI-Learning-Lab/blob/main/Programming-Languages/Python/Fundamental-Coding-Interview-Prep-with-Python/01_Revisiting_Python_Essentials.ipynb) [![Open in Colab](https://img.shields.io/badge/Google%20Colab-F9AB00?logo=googlecolab&logoColor=white&style=flat)](https://colab.research.google.com/github/ancilcleetus/AI-Learning-Lab/blob/main/Programming-Languages/Python/Fundamental-Coding-Interview-Prep-with-Python/01_Revisiting_Python_Essentials.ipynb)
-
-An introductory course to revitalize your Python knowledge. Develop competency in Python syntax, string operations, and looping techniques, setting a robust platform for tackling basic programming issues.
-
-## Course 2: Applying Simple Looping in Practice with Python ![100%](https://geps.dev/progress/100) [![Open in GitHub](https://img.shields.io/badge/GitHub-181717?logo=github&logoColor=white&style=flat)](02_Applying_Simple_Looping_in_Practice_with_Python.ipynb) [![Open in nbviewer](https://img.shields.io/badge/Jupyter%20nbviewer-F37626?logo=jupyter&logoColor=white&style=flat)](https://nbviewer.org/github/ancilcleetus/AI-Learning-Lab/blob/main/Programming-Languages/Python/Fundamental-Coding-Interview-Prep-with-Python/02_Applying_Simple_Looping_in_Practice_with_Python.ipynb) [![Open in Colab](https://img.shields.io/badge/Google%20Colab-F9AB00?logo=googlecolab&logoColor=white&style=flat)](https://colab.research.google.com/github/ancilcleetus/AI-Learning-Lab/blob/main/Programming-Languages/Python/Fundamental-Coding-Interview-Prep-with-Python/02_Applying_Simple_Looping_in_Practice_with_Python.ipynb)
-
-Dive into the application of basic looping techniques in real scenarios. This course will allow you to apply your Python knowledge to solve practical tasks, developing your skill in real-world applications of simple loops.
