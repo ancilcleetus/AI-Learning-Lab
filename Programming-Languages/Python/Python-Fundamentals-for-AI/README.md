@@ -4,7 +4,7 @@ Based On **Andrej Karpathy's Zero to Hero Course**: All lessons in this course a
 
 ## What you'll learn
 
-Essential Python concepts needed for deep learning and neural networks. Learn Python's object-oriented features, NumPy arrays, and PyTorch tensors through hands-on coding exercises.
+Essential Python concepts needed for deep learning and neural networks. Learn Python's object-oriented features, NumPy arrays, PyTorch tensors, string processing, visualization with Matplotlib, and essential standard library modules through hands-on coding exercises.
 
 ## Contents
 
