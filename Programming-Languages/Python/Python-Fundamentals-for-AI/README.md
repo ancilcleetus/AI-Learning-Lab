@@ -8,7 +8,7 @@ Essential Python concepts needed for deep learning and neural networks. Learn Py
 
 ## Contents
 
-* Python Fundamentals for AI ![75%](https://geps.dev/progress/75) [![Open in GitHub](https://img.shields.io/badge/GitHub-181717?logo=github&logoColor=white&style=flat)](Python_Fundamentals_for_AI.ipynb) [![Open in nbviewer](https://img.shields.io/badge/Jupyter%20nbviewer-F37626?logo=jupyter&logoColor=white&style=flat)](https://nbviewer.org/github/ancilcleetus/AI-Learning-Lab/blob/main/Programming-Languages/Python/Python-Fundamentals-for-AI/Python_Fundamentals_for_AI.ipynb) [![Open in Colab](https://img.shields.io/badge/Google%20Colab-F9AB00?logo=googlecolab&logoColor=white&style=flat)](https://colab.research.google.com/github/ancilcleetus/AI-Learning-Lab/blob/main/Programming-Languages/Python/Python-Fundamentals-for-AI/Python_Fundamentals_for_AI.ipynb)
+* Python Fundamentals for AI ![100%](https://geps.dev/progress/100) [![Open in GitHub](https://img.shields.io/badge/GitHub-181717?logo=github&logoColor=white&style=flat)](Python_Fundamentals_for_AI.ipynb) [![Open in nbviewer](https://img.shields.io/badge/Jupyter%20nbviewer-F37626?logo=jupyter&logoColor=white&style=flat)](https://nbviewer.org/github/ancilcleetus/AI-Learning-Lab/blob/main/Programming-Languages/Python/Python-Fundamentals-for-AI/Python_Fundamentals_for_AI.ipynb) [![Open in Colab](https://img.shields.io/badge/Google%20Colab-F9AB00?logo=googlecolab&logoColor=white&style=flat)](https://colab.research.google.com/github/ancilcleetus/AI-Learning-Lab/blob/main/Programming-Languages/Python/Python-Fundamentals-for-AI/Python_Fundamentals_for_AI.ipynb)
 
 ## References
 * **Andrej Karpathy's Zero to Hero Course**
