@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How Transformer LLMs Work: Assessment</title>
+<style>
+  :root { --bg:#eef3f9; --card:#fff; --text:#0f172a; --opt:#3b4252; --muted:#6b7686; --line:#e2e8f0; --ring:#9fc5de;
+          --ok:#2e9e48; --okbg:#e1f7e6; --bad:#c62828; --badbg:#fdecea; --btn:#0f172a; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#101722; --card:#1a2331; --text:#eef2f7; --opt:#c9d1de; --muted:#93a0b3; --line:#2b3748; --ring:#4a7fa3;
+            --ok:#5ccb7a; --okbg:#173a26; --bad:#ff8a80; --badbg:#3d1f1f; --btn:#eef2f7; }
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font:16px/1.6 Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width:820px; margin:0 auto; padding:28px 16px 56px; }
+  .card { background:var(--card); border-radius:12px; box-shadow:0 1px 4px rgba(15,23,42,.14); padding:22px 26px; margin-bottom:22px; }
+  h1 { font-size:1.65rem; line-height:1.25; margin:0 0 8px; }
+  .status { font-size:1.05rem; margin:2px 0; }
+  .status b.pass { color:var(--ok); } .status b.fail { color:var(--bad); }
+  .muted { color:var(--muted); }
+  .qhead { display:flex; justify-content:space-between; gap:12px; font-size:.95rem; margin-bottom:14px; }
+  .qhead .num { font-weight:700; }
+  .pts.ok { color:var(--ok); } .pts.bad { color:var(--bad); } .pts { color:var(--muted); white-space:nowrap; }
+  .q { font-size:1.08rem; line-height:1.75; margin:0 0 14px; }
+  label.opt { display:flex; gap:22px; align-items:flex-start; padding:12px 6px; cursor:pointer; color:var(--opt); line-height:1.8; border-radius:8px; }
+  label.opt:hover { background:rgba(80,130,170,.08); }
+  label.opt input { width:20px; height:20px; margin:7px 0 0 4px; flex:none; accent-color:#3d8fbf; }
+  .panel { border-radius:10px; padding:14px 22px 16px; margin:6px 0 10px; line-height:1.75; }
+  .panel.ok { background:var(--okbg); color:var(--ok); }
+  .panel.bad { background:var(--badbg); color:var(--bad); }
+  .panel .tt { font-weight:700; display:flex; align-items:center; gap:8px; margin-bottom:2px; }
+  .ic { width:18px; height:18px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:12px; color:#fff; background:currentColor; }
+  .ic span { color:var(--okbg); } .panel.bad .ic span { color:var(--badbg); }
+  .row { margin-top:14px; display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
+  button { font:inherit; font-size:.97rem; border-radius:8px; padding:9px 22px; cursor:pointer; border:1px solid var(--line); background:var(--card); color:var(--text); }
+  button.primary { background:var(--btn); color:var(--card); border-color:var(--btn); }
+  button:focus-visible, input:focus-visible { outline:3px solid #3d8fbf; outline-offset:2px; }
+  .actions { display:flex; gap:12px; flex-wrap:wrap; }
+  .warn { color:var(--muted); }
+</style>
+</head>
+<body>
+<main>
+  <section id="summary" class="card" tabindex="-1" aria-live="polite"></section>
+  <div id="quiz"></div>
+  <div class="actions">
+    <button type="button" id="seeScore" class="primary">See my score</button>
+    <button type="button" id="startOver">Start over</button>
+  </div>
+</main>
+
+<script>
+/* Answers are salted SHA-256 hashes; explanations are encrypted and unlock only with the correct option. */
+var QUESTIONS = [
+{
+"id": "t1",
+"q": "Which of the following best describes the main components and architectural principles of transformer-based large language models (LLMs)?",
+"o": [
+"The main components are tokenization, embeddings, convolutional layers, and a sequence classification head.",
+"The main components are tokenization, static word embeddings, recurrent attention layers, and a context output layer.",
+"The main components are tokenization, embeddings, stacked transformer blocks (with attention and feedforward layers), and a language modeling head.",
+"The main components are word segmentation, one-hot encodings, recurrent neural networks, and a decoder module."
+],
+"h": "6f50d6600bd2efb143f4506f4a33108a40a26f02f772e7c1f3936229da88d41a",
+"e": "68b2edefefb88fdb303159ba43e096a41167777244cd48e45e904e6e7c386e507346f178879904b73ac41fcecc933e2904ebe60fe824b6e339549ff3c229a567aa7246de335d6cf9d66347c6dba0862643e9fe41097caeab46e4191ae7c913a456f3814db6d1828e66ded5c241056b1d50008f0d3abff0b1614545d80ff4b44fd1cb1a1f669ec57b178c2b6cec5b3a57dcdfd67998264ea0ec8c809cd83fa28521bf79007f53e0759a23fb15db31fa7c4e66669e0a0a9b6cd27e8d6405bc2a2d246fd753308d7b900a3f0810032299945fc899c1b6f2dcb72b398954a4f4850989dc3e"
+},
+{
+"id": "t2",
+"q": "How does tokenization prepare text for processing by a language model?",
+"o": [
+"Tokenization separates text into sentences, gives each a category label, and stores them as lists for model processing.",
+"Tokenization breaks text into tokens, assigns each a unique ID, and represents them as vectors for model processing.",
+"Tokenization splits text into words, tags each token with a part-of-speech label, and encodes them as one-hot vectors for model processing.",
+"Tokenization divides text into paragraphs, assigns each a frequency score, and encodes them as matrices before processing."
+],
+"h": "4c6673bf7358fe9dc79ecc775d7baf99ddf12636a9ac6062fa6ae5dced1e426d",
+"e": "78458ce275183248d2d2d3b2a10d57cabdcf93767ad110ab5eaa14038c9173ccd6171f47fcec89af4b6da38e8e6e9b367afd7dc648ac66988b4a088ca46b44bc78030315d4e469b619f7b96bd5c272ad07e1e672683407b993cc42d54a56dca11c901b4a5502fd31bbc1b102417607dae81b61f856fcb7e9438284f3f63b345b06de20be85fde6fcb474ea7f5b5eabac5d798726ab33b16178ed28f148c01367160a"
+},
+{
+"id": "t3",
+"q": "Which of the following best describes the main components of the transformer architecture and their roles in processing input text?",
+"o": [
+"The main components are tokenization, embeddings, a recurrent neural network layer, and a language modeling head.",
+"The main components are tokenization, embeddings, transformer blocks (self-attention and feed-forward layers), and a language modeling head.",
+"The main components are tokenization, embeddings, transformer blocks (convolutional and pooling layers), and an output classifier.",
+"The main components are tokenization, positional encodings, attention heads, and a decoding routine for generating text."
+],
+"h": "41e28fc759ba8eed4bdd58fe3d3e275d20ae0f60719e0880d7a8e7f350ca2fb1",
+"e": "ba9ab647a178e011d690774f1faf2dca75536b70d72667de7e58e5fcfcfa36ba5b5a0ada19f3bd0542f37e75cd0b901c5d512b2fcee0a61c2edbf96c65431542ba7977824ba5356eede9ed965d51204c7a3f9a5f5241dd5dea2eb00728b8fdc53c789dc6bc781befe2ea15aef5c2c901c08f751733f6ffc2751ac9692c606f6147a1099b43b3599d42365e167e01b3b703af9888d06c521b9e3aaae7a17a8f556dfb29e7471e66e4088b6df355d84aabc89b2121abf5bdba8b30a93244f18d070b7226908dfca033ed6c36a51c40a6374df5df2e2e64060f8598f8d06d63e098873f1ef4eef9b49f02484c5a5f01f83abe"
+},
+{
+"id": "t4",
+"q": "What is the primary function of the self-attention mechanism within transformer blocks, and how does it support context-aware processing of tokens?",
+"o": [
+"The self-attention mechanism allows each token to incorporate information from all other tokens, enabling context-aware processing.",
+"The self-attention mechanism uses predefined token relationships, limiting the ability to adapt to changing sentence structures.",
+"The self-attention mechanism computes token representations by combining embeddings with predetermined weights that remain constant across the sequence.",
+"The self-attention mechanism assigns tokens to fixed clusters and updates each token's representation using information from its assigned cluster."
+],
+"h": "da8b8c3a5ae1911abfedea1eafad02843a22679fb66dc6b3fd7a0561aab4f855",
+"e": "9bf1905ee0127c7e9d8ab1522eb3fe23d24aae6add008cbe9828d2a147b3b5ea852206a1a6be1669e7090302da671f635290b817b7f5d619d5b5b2cee8833fe41de1e176fd33f166820fd24dee87e17a6aa6c96206c80ba8c890451545debea94685b730930794501ef4db73b07ba313edaa2216f6d28d4c77fb881a45b0d71fa5b5e10af0a3a53976a4063895abc90ea8b8937d186c791a8c759d80b0725aec4fc2b5c53ff42f0e53008a900f"
+},
+{
+"id": "t5",
+"q": "Within a transformer block, how do the self-attention mechanism and the feedforward neural network each contribute to token processing?",
+"o": [
+"Self-attention computes token relationships for context, while the feedforward neural network processes enriched vectors for complex patterns.",
+"Self-attention filters irrelevant tokens from input, while the feedforward neural network generates probability scores for each token.",
+"Self-attention encodes positional information in vectors, while the feedforward neural network matches tokens to vocabulary entries.",
+"Self-attention identifies token frequencies for output, while the feedforward neural network combines token embeddings for positional encoding."
+],
+"h": "5e03baa7fa18a83678561d63fb91c220bfcaf7f75a82c06d11fc3f71e6fb5c96",
+"e": "6db840be76bf0158c1a84b5d0fdbc0c89de681f49a0b5f5f2d774dd6cfdce67411fa208d689cc4bac61622cf62fcd78f2c67850a0b4446d8b43bf5daa7bdca241d111e6cac30985c497be56b260c8b81cad5b70ac178c222b2547a26ff44b3a14041477da64daeb0f4c949b08ce8dd498f82a5c33fe99777c9bcd186e3a67f73dbc103ef422c3893b200edb0d7c83cbbe967bdf3db36de3e4ae95629185c10f5e7178137d339e23ab8452576cfb1f4017ce708540918a5b71b219c3764"
+},
+{
+"id": "t6",
+"q": "What is the main purpose of positional encodings in transformer models, and how do rotary embeddings modify this mechanism in modern architectures?",
+"o": [
+"Positional encodings provide word order information to transformers; rotary embeddings add this at the self-attention layer.",
+"Positional encodings are used for token classification tasks; rotary embeddings add order information during output token generation.",
+"Positional encodings generate random noise to diversify token representations; rotary embeddings apply position information after the feedforward network.",
+"Positional encodings assign unique token identities to transformers; rotary embeddings replace self-attention with fixed position vectors."
+],
+"h": "2bb9df06d6c74342a5bf36a7aed20093dc86b6f3d0fd4654ca10cfe0a8348508",
+"e": "0f80de76135733b81d2ac63da5537889f1b9e60949a973e825d4e8bad4a78057cebd19f293e3d98c56be5f5933ab261080bca3279f1db8186457fa17cc48530ee0f0a009d623aa8a16138544b5712889f8e38ad8512e49c48efa147c0de60fa7e65755e59d7f9a26846117c77e772f26bdb0f8476175d6605b477827c12a06d60bd70c5d7c9edf315e65c9f4100f70b69cfe2ff4bf1ae0412dc59a3fe8d34ba62a966d8ea99d1b7d0311d88726fbf086b111a5aff4a77620f6b52f"
+},
+{
+"id": "t7",
+"q": "Which statement accurately distinguishes between encoder-only, decoder-only, and encoder-decoder transformer model architectures and their primary use cases?",
+"o": [
+"Encoder-only models (e.g. BERT) are used for translation tasks; decoder-only models (e.g. GPT) are used for classification; encoder-decoder models (e.g. T5) are applied to embedding creation.",
+"Encoder-only models (e.g. BERT) are for representations; decoder-only (e.g. GPT) for text generation; encoder-decoder (e.g. T5) for sequence-to-sequence tasks like translation.",
+"Encoder-only models (e.g. BERT) are used for text generation; decoder-only (e.g. GPT) for representations; encoder-decoder (e.g. T5) for classification tasks.",
+"Encoder-only models (e.g. BERT) are suited to sequence-to-sequence tasks; decoder-only (e.g. GPT) for translation; encoder-decoder (e.g. T5) for retrieval and ranking."
+],
+"h": "a1b93e711a38f185e5c9b26440dc2dff427416735d0331886a844f8656ae0b52",
+"e": "cb7ca90d3777ab641d5f29c7bf5f2b1d2c9d8b903ebc22b0baa00a53a099783500b6aa3801a2d8cb78465db9a4ce20bddbe1d6e0581af955c4d1d5eab6ea0722064a33325742dcdb9d6c51029b140477c9052013cf1c44b67690fd0c440d7c931384eacb5d4518dcec2f92559a27a50d3420d4b2a2d117f0bf484c59229325867760855ba42ce866ffce7e0bef1d15f34747f5bddf1d4349c0f767f33262733178e43ce6f53c8bb20377a8acf35928e2c4aeb8fd30b7460385f07d160f0f73728a9fd102967a9fc773d2e1cb517d958d1e1b6e048da7f0622b13953aa29d2825a0cd"
+}
+];
+
+var POINTS_EACH = 10, PASS_CORRECT = 5;
+
+/* ---- Pure-JS SHA-256 (works on file:// pages) ---- */
+function sha256(ascii) {
+  function rr(v, a) { return (v >>> a) | (v << (32 - a)); }
+  var mp = Math.pow, mw = mp(2, 32), res = '', words = [], i, j;
+  var abl = ascii.length * 8;
+  var hash = sha256.h = sha256.h || [], k = sha256.k = sha256.k || [], pc = k.length, ic = {};
+  for (var c = 2; pc < 64; c++) {
+    if (!ic[c]) {
+      for (i = 0; i < 313; i += c) ic[i] = c;
+      hash[pc] = (mp(c, .5) * mw) | 0;
+      k[pc++] = (mp(c, 1 / 3) * mw) | 0;
+    }
+  }
+  ascii += '\x80';
+  while (ascii.length % 64 - 56) ascii += '\x00';
+  for (i = 0; i < ascii.length; i++) {
+    j = ascii.charCodeAt(i);
+    words[i >> 2] |= j << ((3 - i) % 4) * 8;
+  }
+  words[words.length] = ((abl / mw) | 0);
+  words[words.length] = (abl);
+  for (j = 0; j < words.length;) {
+    var w = words.slice(j, j += 16), oh = hash;
+    hash = hash.slice(0, 8);
+    for (i = 0; i < 64; i++) {
+      var w15 = w[i - 15], w2 = w[i - 2], a = hash[0], e = hash[4];
+      var t1 = hash[7] + (rr(e, 6) ^ rr(e, 11) ^ rr(e, 25)) + ((e & hash[5]) ^ ((~e) & hash[6])) + k[i] +
+        (w[i] = (i < 16) ? w[i] : (w[i - 16] + (rr(w15, 7) ^ rr(w15, 18) ^ (w15 >>> 3)) + w[i - 7] + (rr(w2, 17) ^ rr(w2, 19) ^ (w2 >>> 10))) | 0);
+      var t2 = (rr(a, 2) ^ rr(a, 13) ^ rr(a, 22)) + ((a & hash[1]) ^ (a & hash[2]) ^ (hash[1] & hash[2]));
+      hash = [(t1 + t2) | 0].concat(hash);
+      hash[4] = (hash[4] + t1) | 0;
+    }
+    for (i = 0; i < 8; i++) hash[i] = (hash[i] + oh[i]) | 0;
+  }
+  for (i = 0; i < 8; i++) for (j = 3; j + 1; j--) {
+    var b = (hash[i] >> (j * 8)) & 255;
+    res += ((b < 16) ? 0 : '') + b.toString(16);
+  }
+  return res;
+}
+function utf8(s) { return unescape(encodeURIComponent(s)); }
+function hashAnswer(qid, text) { return sha256(utf8(qid + "|" + text)); }
+
+/* Decrypt the explanation with a key derived from the chosen option text */
+function unlock(item, text) {
+  var key = "k|" + item.id + "|" + text, hex = item.e, ks = "", bytes = "";
+  for (var b = 0; b < hex.length / 2; b++) {
+    if (b % 32 === 0) ks = sha256(utf8(key + "|" + (b / 32)));
+    var cb = parseInt(hex.substr(2 * b, 2), 16), kb = parseInt(ks.substr(2 * (b % 32), 2), 16);
+    bytes += String.fromCharCode(cb ^ kb);
+  }
+  return decodeURIComponent(escape(bytes));
+}
+
+function shuffled(arr) {
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1)), t = a[i]; a[i] = a[j]; a[j] = t;
+  }
+  return a;
+}
+function el(tag, cls, text) {
+  var e = document.createElement(tag);
+  if (cls) e.className = cls;
+  if (text !== undefined) e.textContent = text;
+  return e;
+}
+
+var root = document.getElementById("quiz");
+var summary = document.getElementById("summary");
+var firstAttempt, attempts, ptsLabels;
+
+function showIntro() {
+  summary.innerHTML = "";
+  summary.appendChild(el("h1", "", "How Transformer LLMs Work: Assessment"));
+  summary.appendChild(el("p", "status muted",
+    QUESTIONS.length + " questions \u00b7 " + POINTS_EACH + " points each \u00b7 " +
+    (PASS_CORRECT * POINTS_EACH) + "/" + (QUESTIONS.length * POINTS_EACH) + " points needed to pass. " +
+    "Retries are allowed, but your score uses your first attempt on each question."));
+}
+
+function buildQuiz() {
+  firstAttempt = {}; attempts = {}; ptsLabels = {};
+  root.innerHTML = "";
+  showIntro();
+
+  QUESTIONS.forEach(function (item, n) {
+    var card = el("section", "card");
+    var head = el("div", "qhead");
+    head.appendChild(el("span", "num", "Question " + (n + 1) + ":"));
+    var pts = el("span", "pts", POINTS_EACH + " points");
+    head.appendChild(pts);
+    ptsLabels[item.id] = pts;
+    card.appendChild(head);
+    card.appendChild(el("p", "q", item.q));
+
+    var group = "g_" + item.id, panel = null, labels = [];
+    function clearPanel() { if (panel && panel.parentNode) panel.parentNode.removeChild(panel); panel = null; }
+
+    shuffled(item.o).forEach(function (text) {
+      var label = el("label", "opt");
+      var input = document.createElement("input");
+      input.type = "radio"; input.name = group; input.value = text;
+      input.addEventListener("change", clearPanel);
+      label.appendChild(input);
+      label.appendChild(el("span", "", text));
+      card.appendChild(label);
+      labels.push(label);
+    });
+
+    var row = el("div", "row");
+    var btn = el("button", "primary", "Submit");
+    btn.type = "button";
+    var warn = el("span", "warn");
+    row.appendChild(btn); row.appendChild(warn);
+    card.appendChild(row);
+
+    btn.addEventListener("click", function () {
+      var sel = card.querySelector("input[name=" + group + "]:checked");
+      clearPanel(); warn.textContent = "";
+      if (!sel) { warn.textContent = "Select an answer first."; return; }
+      var correct = hashAnswer(item.id, sel.value) === item.h;
+      attempts[item.id] = (attempts[item.id] || 0) + 1;
+      if (!(item.id in firstAttempt)) firstAttempt[item.id] = correct;
+
+      panel = el("div", "panel " + (correct ? "ok" : "bad"));
+      var tt = el("div", "tt");
+      var ic = el("span", "ic"); ic.appendChild(el("span", "", correct ? "\u2713" : "\u2715"));
+      tt.appendChild(ic);
+      tt.appendChild(el("span", "", correct ? "Correct" : "Not quite. Try again."));
+      panel.appendChild(tt);
+      if (correct) panel.appendChild(el("div", "", unlock(item, sel.value)));
+      if (attempts[item.id] > 1) panel.appendChild(el("div", "muted", "Your score uses your first attempt."));
+      var lab = sel.parentNode;
+      lab.parentNode.insertBefore(panel, lab.nextSibling);
+    });
+
+    root.appendChild(card);
+  });
+}
+
+function showScore() {
+  var total = QUESTIONS.length, correct = 0;
+  QUESTIONS.forEach(function (item) {
+    var done = item.id in firstAttempt, ok = done && firstAttempt[item.id];
+    if (ok) correct++;
+    var p = ptsLabels[item.id];
+    p.className = "pts " + (ok ? "ok" : "bad");
+    p.textContent = (ok ? "\u2713 " : "") + (ok ? POINTS_EACH : 0) + "/" + POINTS_EACH + " points";
+  });
+  var unanswered = total - Object.keys(firstAttempt).length;
+  var earned = correct * POINTS_EACH, max = total * POINTS_EACH, need = PASS_CORRECT * POINTS_EACH;
+  var passed = correct >= PASS_CORRECT;
+
+  summary.innerHTML = "";
+  summary.appendChild(el("h1", "", "How Transformer LLMs Work: Assessment"));
+  var s1 = el("p", "status");
+  s1.appendChild(el("b", passed ? "pass" : "fail", passed ? "Pass" : "Not yet passed"));
+  s1.appendChild(document.createTextNode(" \u00b7 " + earned + "/" + max + " points earned"));
+  summary.appendChild(s1);
+  summary.appendChild(el("p", "status", (correct / total * 100).toFixed(1) + "% \u00b7 " + correct + " of " + total + " correct on first attempt"));
+  summary.appendChild(el("p", "status muted", "You must earn " + need + "/" + max + " points to pass (at least " + PASS_CORRECT + " of " + total + " correct)."));
+  if (unanswered > 0) {
+    summary.appendChild(el("p", "status muted", unanswered + (unanswered === 1 ? " question" : " questions") + " unanswered (counted as wrong)."));
+  }
+  summary.scrollIntoView({ behavior: "smooth", block: "start" });
+  summary.focus({ preventScroll: true });
+}
+
+document.getElementById("seeScore").addEventListener("click", showScore);
+document.getElementById("startOver").addEventListener("click", function () {
+  buildQuiz();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
+buildQuiz();
+</script>
+</body>
+</html>
